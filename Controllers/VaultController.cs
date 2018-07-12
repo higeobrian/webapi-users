@@ -23,7 +23,7 @@ namespace API_Users.Controllers
       if(ModelState.IsValid)
       {
         var user = HttpContext.User;
-        newVault.AuthorId = user.Identity.Name;
+        newVault.UserId = user.Identity.Name;
         return _db.CreateVault(newVault);
       }
       return null;
@@ -46,11 +46,11 @@ namespace API_Users.Controllers
     }
 
 
-    //get by author
-    [HttpGet("author/{id}")]
-    public IEnumerable<Vault> GetByAuthorId(int id)
+    //get by user
+    [HttpGet("user/{id}")]
+    public IEnumerable<Vault> GetByUserId(int id)
     {
-      return _db.GetbyAuthorId(id);
+      return _db.GetByUserId(id);
     }
 
 

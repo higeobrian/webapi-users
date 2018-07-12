@@ -18,7 +18,7 @@ public class KeepRepository : DbContext
     {
       int id = _db.ExecuteScalar<int>(@"
                 INSERT INTO keeps (name, description, userId)
-                VALUES (@Name, @Description, @AuthorId);
+                VALUES (@Name, @Description, @UserId);
                 SELECT LAST_INSERT_ID();
             ", newKeep);
       newKeep.Id = id;
@@ -32,9 +32,9 @@ public class KeepRepository : DbContext
     }
 
     // Get by Author
-    public IEnumerable<Keep> GetbyAuthorId(int id)
+    public IEnumerable<Keep> GetByUserId(int id)
     {
-      return _db.Query<Keep>("SELECT * FROM keeps WHERE authorId = @id;", new { id });
+      return _db.Query<Keep>("SELECT * FROM keeps WHERE UserId = @id;", new { id });
     }
 
     // Get by Id
@@ -51,6 +51,7 @@ public class KeepRepository : DbContext
                 UPDATE keeps SET
                     name = @Name,
                     description = @Description
+                    userId = @UserId
                 WHERE id = @Id
             ", keep);
       if (i > 0)

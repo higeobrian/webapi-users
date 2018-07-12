@@ -42,7 +42,7 @@
 --     INDEX (userId),
 
 --     FOREIGN KEY (userId)
---         REFERENCES users(id)
+--         REFERENCES users(id) 
 --         ON DELETE CASCADE,
 
 --     FOREIGN KEY (vaultId)

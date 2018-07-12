@@ -18,7 +18,7 @@ namespace API_Users.Repositories
     {
       int id = _db.ExecuteScalar<int>(@"
                 INSERT INTO vaults (name, description, userId)
-                VALUES (@Name, @Description, @AuthorId);
+                VALUES (@Name, @Description, @UserId);
                 SELECT LAST_INSERT_ID();
             ", newVault);
       newVault.Id = id;
@@ -32,9 +32,9 @@ namespace API_Users.Repositories
     }
 
     // Get by Author
-    public IEnumerable<Vault> GetbyAuthorId(int id)
+    public IEnumerable<Vault> GetByUserId(int id)
     {
-      return _db.Query<Vault>("SELECT * FROM vaults WHERE authorId = @id;", new { id });
+      return _db.Query<Vault>("SELECT * FROM vaults WHERE userId = @id;", new { id });
     }
 
     // Get by Id
@@ -51,6 +51,7 @@ namespace API_Users.Repositories
                 UPDATE vaults SET
                     name = @Name,
                     description = @Description
+                    userId = @UserId
                 WHERE id = @Id
             ", vault);
       if (i > 0)
