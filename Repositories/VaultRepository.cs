@@ -12,7 +12,8 @@ namespace API_Users.Repositories
     {
 
     }
-    // Create Vault
+
+    // Create 
     public Vault CreateVault(Vault newVault)
     {
       int id = _db.ExecuteScalar<int>(@"
@@ -23,21 +24,25 @@ namespace API_Users.Repositories
       newVault.Id = id;
       return newVault;
     }
-    // GetAll Vault
+
+    // Get All 
     public IEnumerable<Vault> GetAll()
     {
       return _db.Query<Vault>("SELECT * FROM vaults;");
     }
-    // GetbyAuthor
+
+    // Get by Author
     public IEnumerable<Vault> GetbyAuthorId(int id)
     {
       return _db.Query<Vault>("SELECT * FROM vaults WHERE authorId = @id;", new { id });
     }
-    // GetbyId
+
+    // Get by Id
     public Vault GetbyVaultId(int id)
     {
       return _db.QueryFirstOrDefault<Vault>("SELECT * FROM vaults WHERE id = @id;", new { id });
     }
+
     // Edit
     public Vault EditVault(int id, Vault vault)
     {
@@ -54,6 +59,7 @@ namespace API_Users.Repositories
       }
       return null;
     }
+    
     // Delete
     public bool DeletVault(int id)
     {

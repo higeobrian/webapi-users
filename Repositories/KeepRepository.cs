@@ -12,6 +12,7 @@ public class KeepRepository : DbContext
     {
 
     }
+
     // Create Keep
     public Keep CreateKeep(Keep newKeep)
     {
@@ -23,21 +24,25 @@ public class KeepRepository : DbContext
       newKeep.Id = id;
       return newKeep;
     }
-    // GetAll Keep
+
+    // Get All Keep
     public IEnumerable<Keep> GetAll()
     {
       return _db.Query<Keep>("SELECT * FROM keeps;");
     }
-    // GetbyAuthor
+
+    // Get by Author
     public IEnumerable<Keep> GetbyAuthorId(int id)
     {
       return _db.Query<Keep>("SELECT * FROM keeps WHERE authorId = @id;", new { id });
     }
-    // GetbyId
+
+    // Get by Id
     public Keep GetbyKeepId(int id)
     {
       return _db.QueryFirstOrDefault<Keep>("SELECT * FROM keeps WHERE id = @id;", new { id });
     }
+
     // Edit
     public Keep EditKeep(int id, Keep keep)
     {
@@ -54,6 +59,7 @@ public class KeepRepository : DbContext
       }
       return null;
     }
+
     // Delete
     public bool DeleteKeep(int id)
     {
@@ -69,9 +75,6 @@ public class KeepRepository : DbContext
       return false;
     }
 
-
   }
-
-
 
 }

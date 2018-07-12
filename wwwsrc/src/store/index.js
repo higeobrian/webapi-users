@@ -4,7 +4,7 @@ import axios from 'axios'
 import router from '../router'
 
 let auth = axios.create({
-    baseURL: 'http://localhost:3000/api',
+    baseURL: 'http://localhost:5000',
     timeout: 3000
 })
 
@@ -14,6 +14,8 @@ export default new vuex.Store({
     state: {
         user: {},
         posts: [],
+        keeps: [],
+        vaults: [],
         comments: [],
         subComments: [],
         activePost: {},
@@ -24,6 +26,12 @@ export default new vuex.Store({
     mutations: {
         setUser(state, user) {
             state.user = user
+        },
+        setKeeps(state, keeps) {
+            state.keeps = keeps
+        },
+        setVaults(state, vaults) {
+            state.vaults = vaults
         },
         setPost(state, post) {
             state.posts = post
@@ -50,18 +58,22 @@ export default new vuex.Store({
             }
         },
 
+        
         addUsers({ dispatch, commit }, user) {
             if (user.name.length >= 3 && user.name.length <= 10) {
                 auth.post('/create', user).then(res => {
                     commit('setUser', res.data)
                     router.push('/')
                 })
-                    .catch(err => {
-                        console.error(err)
-                    })
+                .catch(err => {
+                    console.error(err)
+                })
             }
         },
-
+        getKeeps({ dispatch, commit, state}) {
+            auth.get(baseURL + '/keeps')
+        },
+        
         getPosts({ dispatch, commit, state }) {
             auth.get('/posts')
                 .then(res => {
