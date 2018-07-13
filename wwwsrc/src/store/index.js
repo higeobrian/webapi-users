@@ -30,9 +30,8 @@ export default {
     state: {
         user: {},
         keeps: [],
-        activeKeep: [],
         vaults: [],
-        activeVault: [],
+        activeVault: [], //need boolean
     },
 
     mutations: {
@@ -42,24 +41,25 @@ export default {
         deleteUser(state, user) {
             state.user = user
         },
-        setKeeps(state, keeps) {
+        setKeeps(state, keeps) { //shows all keeps home
             state.keeps = keeps
         },
-        setActiveKeep(state, keep) {
-            state.activeKeep = keep
+        deleteKeep(state, keep) {
+            state.keeps = keep
         },
-        setVaults(state, vaults) {
+        setVaults(state, vaults) { //shows all vaults on profile
             state.vaults = vaults
         },
-        setActiveVault(state, vault) {
+        setActiveVault(state, vault) { //shows all keeps in the vault you're in
             state.activeVault = vault
         },
-        addKeep(state, keep) {
+        addKeep(state, keep) { //adds keep to whatever vault you select (by id)
             state.keep = keep
         }, 
-        addVault(state, vault) {
+        addVault(state, vault) { //adds or create new vault on profile page
             state.vault = vault
         }
+
     },
 
     actions: {        
@@ -106,7 +106,7 @@ export default {
                 })
         },
 
-        getKeeps({commit, dispatch, state}) {
+        getKeeps({commit, dispatch, state}) {   //get all keeps 
             server.get('api/keeps')
               .then(res => {
                 commit("setKeeps", res.data)
@@ -116,7 +116,7 @@ export default {
               })
           },
 
-        getVaults({commit, dispatch, state}) {
+        getVaults({commit, dispatch, state}) {    //get all vaults
                 auth.get('api/vaults')
                     .then(res => {
                         commit('setVaults', sort)
@@ -126,7 +126,7 @@ export default {
                     })
             },
 
-        addKeep({ dispatch, commit }, payload) {
+        addKeep({ dispatch, commit }, payload) {    //add keep to vault selected (vault id) attached w/ user id.
                 auth.post('/posts', payload)
                     .then(res => {
                         dispatch('addKeep')
@@ -136,7 +136,7 @@ export default {
                       })
         },
 
-        createVault({ dispatch, commit }, payload) {
+        createVault({ dispatch, commit }, payload) {    //create vault with user id attached
             auth.post('api/vault', payload)
                 .then(res => {
                     dispatch('addVault')
@@ -146,7 +146,7 @@ export default {
                   })
         },
 
-        createKeep({ dispatch, commit }, payload) {
+        createKeep({ dispatch, commit }, payload) {    //create keep with user id attached.
             auth.post('api/keep', payload)
                 .then(res => {
                     dispatch('addkeep')
@@ -163,24 +163,7 @@ export default {
                     })
         },
            
-        getSubComments({ dispatch, commit }, comment) {
-                auth.get('/sub-comments?commentId=' + comment._id)
-                    .then(res => {
-                        var sort = res.data.sort((a, b) => {
-                            b.userUpVotes.length - a.userUpVotes.length
-                        })
-                        console.log(res)
-                        commit('setSubComments', res.data)
-                    })
-        },
 
-        addSubComment({ dispatch, commit, state }, subComment) {
-                auth.post('/sub-comments', subComment)
-                    .then(res => {
-                        dispatch('getSubComments', state.activeComment)
-                    })
-        },
-               
         deletePost({ dispatch, commit }, post) {
                 auth.delete('/posts/' + post._id)
                     .then(() => {
@@ -199,14 +182,7 @@ export default {
                 var signedOut = {}
                 commit('setUser', signedOut)
         },
-            
-        favPost({ dispatch, commit, state }, post) {
-                state.user.favorites.push(post)
-                auth.put('users/' + state.user._id, state.user)
-                    .then(res => {
-                        commit('setUser', res.data.user)
-                    })
-        },
+      
             
         }
     }
