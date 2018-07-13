@@ -31,7 +31,7 @@ namespace API_Users.Repositories
       return _db.Query<Vault>("SELECT * FROM vaults;");
     }
 
-    // Get by Author
+    // Get by User
     public IEnumerable<Vault> GetByUserId(int id)
     {
       return _db.Query<Vault>("SELECT * FROM vaults WHERE userId = @id;", new { id });

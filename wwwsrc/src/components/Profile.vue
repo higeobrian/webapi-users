@@ -1,8 +1,19 @@
 <template>
     <div class="Home">
+        <button class="butt" @click="toggle" v-if="user._id">Add post</button>
+        <div v-if="showAddPost">
+            <form v-on:submit.prevent="addPost" id='post'>
+                <div class="form-group">
+                    <input class="register" type="text" name="title" placeholder=" Title" v-model="post.title">
+                    <input class="register" type="text" name="body" placeholder=" Your post here...." v-model="post.body">
+                    <input class="register" type="url" name="img" placeholder=" Image" v-model="post.img">
+                </div>
+                <button class="butt" type="submit">Post</button>
+            </form>
+        </div>
 
         <div>
-            <div class="post" v-for="post in posts">
+
                     <div class="card container-fluid center">
                             <div class="card-body">
                 <a @click="selectPost(post)">
@@ -14,26 +25,26 @@
                 <p>upvotes: {{post.userUpVotes.length}}</p>
                 <p>downvotes: {{post.userDownVotes.length}}</p>
                 <button :disabled="voteCheck(post)" v-if="user._id" @click="addUpVote(post)">up vote</button>
-                <button :disabled="voteCheck(post)" v-if="user._id" @click="addDownVote(post)">down vote</button>
+                <button :disabled="downCheck(post)" v-if="user._id" @click="addDownVote(post)">down vote</button>
                 <button v-if="post.userId == user._id" @click="deletePost(post)">Delete</button>
                 <div v-if="user._id">
-                    <button @click="favPost(post)" v-if="!(user.favorites.includes(post._id))"><i class="far fa-star"></i></button>
-                    <button @click="unFavPost(post)" v-else><i class="fas fa-star"></i></button>
-            </div>
+                        <button @click="favPost(post)" v-if="!(user.favorites.includes(post._id))"><i class="far fa-star"></i></button>
+                        <button @click="unFavPost(post)" v-else><i class="fas fa-star"></i></button>
+                </div>
             </div>
             </div>
             </div>
         </div>
 
-
-
-    </div>
 </template>
 
 
 <script>
     export default {
-        name: 'Favs',
+        name: 'Home',
+        mounted() {
+            this.$store.dispatch('getPosts')
+        },
         data() {
             return {
                 post: {
@@ -44,7 +55,8 @@
                     userDownVotes: [],
                     author: '',
                     userId: '',
-                }
+                },
+                showAddPost: false,
             }
         },
         computed: {
@@ -57,6 +69,25 @@
             }
         },
         methods: {
+            addPost() {
+                if (this.user._id) {
+                    this.post.author = this.user.name
+                    this.post.userId = this.user._id
+                }
+                this.$store.dispatch('addPost', this.post)
+                this.post = {
+                    title: '',
+                    body: '',
+                    img: '',
+                    userUpVotes: [],
+                    userDownVotes: [],
+                    author: '',
+                    userId: '',
+                }
+            },
+            toggle() {
+                this.showAddPost = !this.showAddPost
+            },
             selectPost(post) {
                 this.$store.state.activePost = post
                 this.$store.dispatch('getComments', post)
@@ -68,6 +99,9 @@
             },
             voteCheck(post) {
                 return (post.userUpVotes.includes(this.user._id))
+            },
+            downCheck(post) {
+                return (post.userDownVotes.includes(this.user._id))
             },
             addDownVote(post) {
                 post.userDownVotes.push(this.user._id)

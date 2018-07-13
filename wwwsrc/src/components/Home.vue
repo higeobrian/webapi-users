@@ -13,7 +13,6 @@
         </div>
 
         <div>
-            <div class="post" v-for="post in posts">
                     <div class="card container-fluid center">
                             <div class="card-body">
                 <a @click="selectPost(post)">
@@ -37,8 +36,6 @@
         </div>
 
 
-
-    </div>
 </template>
 
 

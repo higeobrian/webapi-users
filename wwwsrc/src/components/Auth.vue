@@ -51,6 +51,8 @@
     }
   }
 </script>
+
+
 <style scoped>
 .login{
   background-image: url('../../D&D.jpg');
@@ -83,6 +85,4 @@
   border-radius: 1rem;
   margin-left:1rem
 }
-
-
 </style>
