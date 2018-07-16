@@ -26,7 +26,7 @@ var auth = axios.create({
     withCredentials: true
 })
 
-export default new vuex.store ({
+export default new vuex.Store({
     state: {
         user: {},
         keeps: [],
@@ -72,8 +72,6 @@ export default new vuex.store ({
         // addVault(state, vault) {                  //adds or create new vault on profile page
         //     state.vault = vault
         // },
-
-
 
 
         // VAULTKEEP

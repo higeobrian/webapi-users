@@ -32,9 +32,8 @@
         <div class="col-12">
     
         <div v-for="vault in vaults" v-bind:key="vault._id">
+        <router-link :to="{ name: 'Profile'}"> 
         <button @click="setActiveVault(vault)">{{vault.title}}</button>
-
-        <router-link :to="{ name: 'Profile'}">
         </router-link>
 
         </div>

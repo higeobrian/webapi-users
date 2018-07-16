@@ -52,6 +52,8 @@ public class KeepRepository : DbContext
                     title = @Title,
                     description = @Description,
                     imageUrl = @ImageUrl,
+                    view = @View,
+                    userId = @UserId
                 WHERE id = @Id
             ", keep);
       if (i > 0)

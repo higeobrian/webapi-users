@@ -50,7 +50,7 @@ namespace API_Users.Repositories
       var i = _db.Execute(@"
                 UPDATE vaults SET
                     title = @Title,
-                    description = @Description,
+                    description = @Description
                 WHERE id = @Id
             ", vault);
       if (i > 0)
