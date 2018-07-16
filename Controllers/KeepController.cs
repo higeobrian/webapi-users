@@ -5,6 +5,7 @@ using API_Users.Models;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 
+
 namespace API_Users.Controllers
 {
   [Route("api/[controller]")]
@@ -60,6 +61,19 @@ namespace API_Users.Controllers
     public Keep EditKeep(int id, [FromBody]Keep newKeep)
     {
       return _db.EditKeep(id, newKeep);
+    }
+
+    [HttpDelete("{id}")]
+    [Authorize]
+    public string DeleteKeep(int id)
+    {
+      var user = HttpContext.User.Identity.Name;
+      bool delete = _db.DeleteKeep(id, user);
+      if(delete)
+    {
+      return "Successfully Deleted";
+    }
+      return "Invalid";
     }
   }
 }

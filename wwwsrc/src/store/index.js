@@ -14,11 +14,11 @@ var api = axios.create({
     withCredentials: true
 })
 
-var api = axios.create({
-    baseURL: baseUrl + 'profile/',
-    timeout: 3000,
-    withCredentials: true
-})
+// var api = axios.create({
+//     baseURL: baseUrl + 'profile/',
+//     timeout: 3000,
+//     withCredentials: true
+// })
 
 var auth = axios.create({
     baseURL: baseUrl + 'auth/',
@@ -164,17 +164,13 @@ export default {
         },
            
 
-        deletePost({ dispatch, commit }, post) {
-                auth.delete('/posts/' + post._id)
+        deleteKeep({ dispatch, commit }, keep) {
+                api.delete('/keep/' + keep.id)
                     .then(() => {
-                        dispatch('getPosts')
+                        commit('deleteKeep', res.data)
                     })
-        },
-            
-        deleteComment({ dispatch, commit }, comment) {
-                auth.delete('/comments/' + comment._id)
-                    .then(() => {
-                        dispatch('getComments')
+                    .catch(err => {
+                        console.log(err)
                     })
         },
       

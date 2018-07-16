@@ -17,8 +17,8 @@ public class KeepRepository : DbContext
     public Keep CreateKeep(Keep newKeep)
     {
       int id = _db.ExecuteScalar<int>(@"
-                INSERT INTO keeps (name, description, imageUrl, userId)
-                VALUES (@Name, @Description, @ImageUrl, @UserId);
+                INSERT INTO keeps (title, description, imageUrl, userId, view, public)
+                VALUES (@Title, @Description, @ImageUrl, @UserId, @View, @Public);
                 SELECT LAST_INSERT_ID();
             ", newKeep);
       newKeep.Id = id;
@@ -49,10 +49,9 @@ public class KeepRepository : DbContext
       keep.Id = id;
       var i = _db.Execute(@"
                 UPDATE keeps SET
-                    name = @Name,
+                    title = @Title,
                     description = @Description,
                     imageUrl = @ImageUrl,
-                    userId = @UserId
                 WHERE id = @Id
             ", keep);
       if (i > 0)
@@ -63,7 +62,7 @@ public class KeepRepository : DbContext
     }
 
     // Delete
-    public bool DeleteKeep(int id)
+    public bool DeleteKeep(int id, string userId)
     {
       var i = _db.Execute(@"
       DELETE FROM keeps

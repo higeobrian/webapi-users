@@ -17,8 +17,8 @@ namespace API_Users.Repositories
     public Vault CreateVault(Vault newVault)
     {
       int id = _db.ExecuteScalar<int>(@"
-                INSERT INTO vaults (name, description, userId)
-                VALUES (@Name, @Description, @UserId);
+                INSERT INTO vaults (title, description, userId)
+                VALUES (@Title, @Description, @UserId);
                 SELECT LAST_INSERT_ID();
             ", newVault);
       newVault.Id = id;
@@ -49,9 +49,8 @@ namespace API_Users.Repositories
       vault.Id = id;
       var i = _db.Execute(@"
                 UPDATE vaults SET
-                    name = @Name,
-                    description = @Description
-                    userId = @UserId
+                    title = @Title,
+                    description = @Description,
                 WHERE id = @Id
             ", vault);
       if (i > 0)

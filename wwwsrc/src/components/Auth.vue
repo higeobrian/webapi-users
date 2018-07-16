@@ -1,88 +1,101 @@
-<template>
-  <div class="Auth">
+// CAPSTONE
 
-    <div class="row login text-white d-flex align-items-center" v-if="showLogin">
+<template>
+  <div class="user jumbotron jumbotron-fluid bgImg">
+    <div class="row justify-content-center">
+    <div class="col-6 card">
+    <div class="login" v-if="showLogin">
       <h1>Login</h1>
       <form v-on:submit.prevent="login" class="form">
-        <input class="input text-white" type="text" name="name" placeholder=" username" id="name" v-model="user.name">
-        <button class="butt" type="submit">Login</button>
+        <input class="input" type="email" name="email" placeholder=" e-mail" id="email" v-model="user.email">
+        <input class="input" type="password" name="password" placeholder=" password" id="name" v-model="user.password">
+        <button class="btn btn-primary btn-success" type="submit">Login</button>
       </form>
-      <p class="user">Not a user ?
-        <em @click="toggle">Register</em>
+      <br>
+      <!-- <div> -->
+         <p>Click to start <button class="btn btn-success" @click="demoLogin">Demo</button></p>
+      <!-- </div> -->
+      <br>
+      <p class="user">Not a user?
+        <em @click="toggle"><button type="button" class="btn btn-danger">Register</button></em>
       </p>
     </div>
-    <div class="register text-white" v-if="!showLogin">
+    <div class="register" v-if="!showLogin">
       <h1>Register</h1>
       <form v-on:submit.prevent="register">
-        <input class="register text-white" type="text" name="name" id="name" v-model="user.name">
-        <button class="butt" type="submit">Register</button>
+        <input class="input" type="email" name="email" placeholder="e-mail" id="email" v-model="user.Email">
+        <input class="input" type="text" name="name" placeholder="name" id="name" v-model="user.UserName">
+        <input class="input" type="password" name="password" placeholder="password" id="name" v-model="user.Password">
+        <button class="btn btn-primary btn-danger" type="submit">Register</button>
       </form>
+      <br>
+      <div>
+      </div>
+      <br>
       <p>Already a user?
-        <em @click="toggle">Login</em>
+        <em @click="toggle"><button class="btn btn-primary btn-success" type="submit">Login</button></em>
       </p>
     </div>
-
+  </div>
+</div>
   </div>
 </template>
 
-
 <script>
   export default {
-    name: 'Auth',
+    name: 'Login',
+    // created() {
+    //   this.$store.dispatch('authenticate', true)
+    // },
+    mounted(){
+      // this.$store.dispatch('authenticate')
+    },
     data() {
       return {
         user: {
-          name: ''
-        },
+          Email: '',
+          Username: '',
+          Password: ''
+        }, 
+        // demo: { //If you use the demologin code for your own server, be sure to register a user that matches these credentials.
+          // email: "demo@demo.com",
+          // displayName: "Demo",
+          // password: "12345"
+        // },
         showLogin: true
       }
     },
-    computed: {},
+    computed: {
+      currentUser() {
+        return this.$store.state.user
+      }
+    },
     methods: {
-      toggle() {
-        this.showLogin = !this.showLogin
+      // demoLogin(){
+      //   this.$store.dispatch('login', this.demo)
+      // },
+      login() {
+        this.$store.dispatch('login', this.user)
       },
       register() {
-        this.$store.dispatch('addUsers', this.user)
+        this.$store.dispatch('register', this.user)
       },
-      login() {
-        this.$store.dispatch('getUsers', this.user)
+      toggle() {
+        this.showLogin = !this.showLogin
       }
     }
   }
 </script>
 
-
 <style scoped>
-.login{
-  background-image: url('../../D&D.jpg');
-  height: 22rem;
-  margin-top: 10rem;
-  margin-left: 7rem;
-  font-size: 2rem
+/* .jumbotron{
+    height: 100vh;
 }
-.bgColor{
-  background-color: #550b11;
-}
-.user{
-  margin-left:2rem
-}
-.form{
- margin-left:1rem
-
-}
-.input{
-  border-radius: 1rem;
-  background-color:#470308;
-}
-.butt{
-  height:4rem;
-  border-radius: 2rem;
-  background: #969696;
-}
-.register{
-  background:rgb(61, 24, 24);
-  border-radius: 1rem;
-  margin-left:1rem
-}
+  .bgImg{ 
+    background: url(../assets/travel.jpg);
+  }
+  .card {
+    background-color: rgb(238, 238, 238);
+    opacity: .9;
+  } */
 </style>

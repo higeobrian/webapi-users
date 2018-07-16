@@ -24,6 +24,8 @@
 --     title VARCHAR(20) NOT NULL,
 --     description VARCHAR(255) NOT NULL,
 --     imageUrl TEXT,
+--     view int NOT NULL,
+--     public BOOLEAN NOT NULL,
 --     userId VARCHAR(255),
 --     INDEX userId (userId),
 --     FOREIGN KEY (userId)
