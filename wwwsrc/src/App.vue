@@ -9,20 +9,20 @@
         <a>Home</a>
         </router-link>
 
-        <!-- <router-link v-if="user.id" :to="{ name: 'Profile'}" class="navbar-brand">
+        <router-link v-if="user.id" :to="{ name: 'Profile'}" class="navbar-brand">
         <a>Profile</a>
         </router-link> -->
         
         </a>    
       
-      <!-- <button type="button" class="navbar-brand btn btn-outline-light" @click="login" v-if="!(user.id)">Login/Register</button> -->
+      <button type="button" class="navbar-brand btn btn-outline-light" @click="login" v-if="!(user.id)">Login/Register</button> -->
       
-      <!-- <div v-if="user.id" class="d-flex flex-column"> -->
-      <!-- <a class="navbar-brand">User: {{user.username}}</a> -->
+      <div v-if="user.id" class="d-flex flex-column">
+      <a class="navbar-brand">User: {{user.username}}</a>
 
-      <!-- <button class="navbar-brand btn btn-outline-light" @click="logout">Log Out</button>
+      <button class="navbar-brand btn btn-outline-light" @click="logout">Log Out</button>
 
-      </div> -->
+      </div>
     </nav>
 
     <router-view/>
@@ -38,18 +38,17 @@ mounted()
 },
 
 computed: {
-      // user() {
-      //   debugger
-      //   return this.$store.state.user.id      
-      //   }
+      user() {
+        return this.$store.state.user   
+        }
   },
 methods: {
-      // login() {
-      //   this.$router.push({name:"Auth"})   //push user auth page
-      // },
-      // lougout() {
-      //   this.$store.dispatch("logout")   //dispatch
-      // }
+      login() {
+        this.$router.push({name:"Auth"})   //push user auth page
+      },
+      lougout() {
+        this.$store.dispatch("logout")   //dispatch
+      }
   }
 }
 </script>

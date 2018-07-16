@@ -181,6 +181,11 @@ export default new vuex.Store({
                     })
         },
 
+        updateView({ dispatch, commit}, payload) {
+
+
+
+        },
         // setVaultKeeps({commit, state}){
         //      api.get('/vaultkeep/' +state.user.id)
         //      .then(res=>{
