@@ -96,7 +96,6 @@ namespace API_Users.Repositories
         return user;
       }
       return null;
-
     }
 
     internal string ChangeUserPassword(ChangeUserPasswordModel user)

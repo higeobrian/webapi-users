@@ -6,8 +6,8 @@
     <div class="login" v-if="showLogin">
       <h1>Login</h1>
       <form v-on:submit.prevent="login" class="form">
-        <input class="input" type="email" name="email" placeholder="E-mail" id="email" v-model="user.Email">
-        <input class="input" type="password" name="password" placeholder="Password" id="name" v-model="user.Password">
+        <input class="input" type="email" name="email" placeholder="E-mail" id="Email" v-model="user.Email">
+        <input class="input" type="password" name="password" placeholder="Password" id="Name" v-model="user.Password">
         <button class="btn btn-primary btn-success" type="submit">Login</button>
       </form>
       <br>
@@ -22,9 +22,9 @@
     <div class="register" v-if="!showLogin">
       <h1>Register</h1>
       <form v-on:submit.prevent="register">
-        <input class="input" type="email" name="email" placeholder="e-mail" id="email" v-model="user.Email">
-        <input class="input" type="text" name="name" placeholder="name" id="name" v-model="user.Username">
-        <input class="input" type="password" name="password" placeholder="password" id="name" v-model="user.Password">
+        <input class="input" type="email" name="email" placeholder="e-mail" id="Email" v-model="user.Email">
+        <input class="input" type="text" name="name" placeholder="name" id="Name" v-model="user.Username">
+        <input class="input" type="password" name="password" placeholder="password" id="Password" v-model="user.Password">
         <button class="btn btn-primary btn-danger" type="submit">Register</button>
       </form>
 

@@ -1,6 +1,5 @@
 
 <template>
-<!-- // REFERENCE GROUP -->
   <div id="app">
     <nav class="navbar navbar-dark bg-primary top-header format">
       <a class="navbar-left">
@@ -11,11 +10,11 @@
 
         <router-link v-if="user.id" :to="{ name: 'Profile'}" class="navbar-brand">
         <a>Profile</a>
-        </router-link> -->
+        </router-link>
         
         </a>    
       
-      <button type="button" class="navbar-brand btn btn-outline-light" @click="login" v-if="!(user.id)">Login/Register</button> -->
+      <button type="button" class="navbar-brand btn btn-outline-light" @click="login" v-if="!(user.id)">Login/Register</button>
       
       <div v-if="user.id" class="d-flex flex-column">
       <a class="navbar-brand">User: {{user.username}}</a>
@@ -46,7 +45,7 @@ methods: {
       login() {
         this.$router.push({name:"Auth"})   //push user auth page
       },
-      lougout() {
+      logout() {
         this.$store.dispatch("logout")   //dispatch
       }
   }
