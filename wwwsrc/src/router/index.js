@@ -10,14 +10,14 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/auth',
-      name: 'Auth',
-      component: Auth
-    },
-    {
       path: '/',
       name: 'Home',
       component: Home  
+    },
+    {
+      path: '/auth',
+      name: 'Auth',
+      component: Auth
     },
     { 
     path: '/profile',

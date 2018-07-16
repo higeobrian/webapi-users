@@ -1,62 +1,71 @@
+
 <template>
+<!-- // REFERENCE GROUP -->
   <div id="app">
-    <nav class="navbar navbar-light top-header">
-      <div>
-          <a class="navbar-brand" @click="getPosts">Home</a>
-          <a class="navbar-brand" v-if="user._id" @click="getFavs">Favorites</a>
-      </div>
-      <a class="navbar-brand" @click="login" v-if="!(user._id)">Sign up/Login</a>
-      <div v-if="user._id" class="d-flex flex-column">
-        <a class="navbar-brand">User: {{user.name}}</a>
-        <a class="navbar-brand" @click="signOut">Sign out</a>
-      </div>
+    <nav class="navbar navbar-dark bg-primary top-header format">
+      <a class="navbar-left">
+
+        <router-link :to="{ name: 'Home'}" class="navbar-brand">
+        <a>Home</a>
+        </router-link>
+
+        <!-- <router-link v-if="user.id" :to="{ name: 'Profile'}" class="navbar-brand">
+        <a>Profile</a>
+        </router-link> -->
+        
+        </a>    
+      
+      <!-- <button type="button" class="navbar-brand btn btn-outline-light" @click="login" v-if="!(user.id)">Login/Register</button> -->
+      
+      <!-- <div v-if="user.id" class="d-flex flex-column"> -->
+      <!-- <a class="navbar-brand">User: {{user.username}}</a> -->
+
+      <!-- <button class="navbar-brand btn btn-outline-light" @click="logout">Log Out</button>
+
+      </div> -->
     </nav>
+
     <router-view/>
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'App',
-    computed: {
-      user() {
-        var user = this.$store.state.user
-        return user
-      }
-    },
-    methods: {
-      getPosts() {
-        this.$router.push('/')
-      },
-      login() {
-        this.$router.push('auth')
-      },
-      signOut() {
-        this.$store.dispatch('signOut')
-      },
-      getFavs() {
-        this.$router.push('favs')
-        this.$store.dispatch('getFavs')
-      }
-    }
+export default {
+  name: 'App',
+mounted()
+{
+  this.$store.dispatch("authenticate")
+},
+
+computed: {
+      // user() {
+      //   debugger
+      //   return this.$store.state.user.id      
+      //   }
+  },
+methods: {
+      // login() {
+      //   this.$router.push({name:"Auth"})   //push user auth page
+      // },
+      // lougout() {
+      //   this.$store.dispatch("logout")   //dispatch
+      // }
   }
+}
 </script>
 
 <style>
-  body {
-    background: #67020a;
-  }
-
-  .top-header {
-    background-image: url('../D20.png');
-  }
-
-  #app {
-
-    font-family: 'Metal Mania', cursive;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    margin-top: 60px;
-  }
+/* body {
+  background: #67020a;
+}
+.top-header {
+  background-image: url("../D20.png");
+}
+#app {
+  font-family: "Metal Mania", cursive;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  margin-top: 60px;
+} */
 </style>

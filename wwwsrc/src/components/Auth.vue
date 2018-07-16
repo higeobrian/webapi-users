@@ -1,6 +1,5 @@
-// CAPSTONE
-
 <template>
+<!-- // CAPSTONE -->
   <div class="user jumbotron jumbotron-fluid bgImg">
     <div class="row justify-content-center">
     <div class="col-6 card">
