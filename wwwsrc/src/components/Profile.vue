@@ -38,6 +38,9 @@ export default {
   },
 
   methods:{
+    removeKeep(){
+      this.$store.dispatch('removeKeep', this.keep)
+    }
   }
 };
 </script>

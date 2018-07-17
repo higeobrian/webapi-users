@@ -188,14 +188,14 @@ export default new vuex.Store({
         removeKeep({ dispatch, commit }, keep) {
             api.delete('api/keep' + keep.id)                          // REMOVE KEEP FROM VAULT [PROFILE]
             .then(() => {                                               // removeKeep MUTATION - alters activeKeep STATE
-                commit('removeKeep', res.data)
+                commit('removeKeep', res.data)                              // CREATE METHOD FOR [PROFILE]
             })
             .catch(err => {
                 console.log(err)
             })
         },
         
-        getUserKeeps({ dispatch, commit }, user) {                   // GETS ALL USER KEEPS [PROFILE]
+        getUserKeeps({ commit }, user) {                   // GETS ALL USER KEEPS [PROFILE]
             api.get('api/keep' + user.id)
             .then(res => {
                 commit("setUserKeeps", res.data)
@@ -257,6 +257,16 @@ export default new vuex.Store({
                 console.log(err)
             })
         },
+
+        getUserVaults ({ commit }, vault) {
+            api.get('api/vault', vault)
+            .then(res => {
+                commit("userVaults", res.data)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
 
 
 

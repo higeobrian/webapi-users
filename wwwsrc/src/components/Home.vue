@@ -68,7 +68,6 @@ export default {
         title: "",
         description: "",
         imageUrl: "",
-        userId: "",
         views: 0
       },
       vault: {
@@ -84,7 +83,8 @@ export default {
     },
     addVault() {
       this.$store.dispatch("createVault", this.vault);
-    },
+    }
+},
 
     computed: {
       keeps() {
@@ -97,66 +97,71 @@ export default {
         return this.$store.state.user;
       },
     }
-      }
-    };
+
+
+
+};
+
+
     </script>
+<!--
+            // addPost() {
+            //     if (this.user._id) {
+            //         this.post.author = this.user.name
+            //         this.post.userId = this.user._id
+            //     }
+            //     this.$store.dispatch('addPost', this.post)
+            //     this.post = {
+            //         title: '',
+            //         body: '',
+            //         img: '',
+            //         userUpVotes: [],
+            //         userDownVotes: [],
+            //         author: '',
+            //         userId: '',
+            //     }
+            // },
 
-    //         addPost() {
-    //             if (this.user._id) {
-    //                 this.post.author = this.user.name
-    //                 this.post.userId = this.user._id
-    //             }
-    //             this.$store.dispatch('addPost', this.post)
-    //             this.post = {
-    //                 title: '',
-    //                 body: '',
-    //                 img: '',
-    //                 userUpVotes: [],
-    //                 userDownVotes: [],
-    //                 author: '',
-    //                 userId: '',
-    //             }
-    //         },
+            // toggle() {
+            //     this.showAddPost = !this.showAddPost
+            // },
 
-    //         toggle() {
-    //             this.showAddPost = !this.showAddPost
-    //         },
+            // selectPost(post) {
+            //     this.$store.state.activePost = post
+            //     this.$store.dispatch('getComments', post)
+            //     this.$router.push('comment')
+            // },
 
-    //         selectPost(post) {
-    //             this.$store.state.activePost = post
-    //             this.$store.dispatch('getComments', post)
-    //             this.$router.push('comment')
-    //         },
+            // addUpVote(post) {
+            //     post.userUpVotes.push(this.user._id)
+            //     this.$store.dispatch('upPost', post)
+            // },
 
-    //         addUpVote(post) {
-    //             post.userUpVotes.push(this.user._id)
-    //             this.$store.dispatch('upPost', post)
-    //         },
+            // voteCheck(post) {
+            //     return (post.userUpVotes.includes(this.user._id))
+            // },
 
-    //         voteCheck(post) {
-    //             return (post.userUpVotes.includes(this.user._id))
-    //         },
+            // downCheck(post) {
+            //     return (post.userDownVotes.includes(this.user._id))
+            // },
 
-    //         downCheck(post) {
-    //             return (post.userDownVotes.includes(this.user._id))
-    //         },
+            // addDownVote(post) {
+            //     post.userDownVotes.push(this.user._id)
+            //     this.$store.dispatch('upPost', post)
+            // },
 
-    //         addDownVote(post) {
-    //             post.userDownVotes.push(this.user._id)
-    //             this.$store.dispatch('upPost', post)
-    //         },
+            // deletePost(post) {
+            //     this.$store.dispatch('deletePost', post)
+            // },
 
-    //         deletePost(post) {
-    //             this.$store.dispatch('deletePost', post)
-    //         },
+            // favPost(post) {
+            //     this.$store.dispatch('favPost', post)
+            // },
 
-    //         favPost(post) {
-    //             this.$store.dispatch('favPost', post)
-    //         },
-
-    //         unFavPost(post) {
-    //             this.$store.dispatch('unFavPost', post)
-    //         }
+            // unFavPost(post) {
+            //     this.$store.dispatch('unFavPost', post)
+            // }
+-->
 
 
 <style scoped>
