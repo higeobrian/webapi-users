@@ -6,7 +6,7 @@
         <form v-on:submit.prevent="addKeep(keep)">
         <input class="input" type="text" name="keepTitle" placeholder="KeepTitle" id="keepTitle" v-model="keep.title">
         <input class="input" type="text" name="keepDescription" placeholder="KeepDecscription" id="keepDescription" v-model="keep.description">
-        <input class="input" type="text" name="keepImgUrl" placeholder="keepImgUrl" id="keepImgUrl" v-model="keep.imgUrl">
+        <input class="input" type="text" name="keepImgUrl" placeholder="keepImgUrl" id="keepImgUrl" v-model="keep.imageUrl">
         <button class="btn btn-primary" type="submit">Create a new Keep</button>
         </form>
     </div>
@@ -22,7 +22,9 @@
     <div class="row">
     <div class="col-12">
         <div v-for="keep in keeps" v-bind:key="keep._id">
-        {{Keep.title}} {{keep.description}} {{keep.imgUrl}}
+        <h2>{{Keep.title}}</h2>
+        <h3>{{keep.description}}</h3>
+        <img :src="keep.imageUrl" alt="">
         </div>
     </div>
     </div>
@@ -46,7 +48,7 @@
 </template>
 
 <script>
-    export default {
+    export default  {
         name: 'Home',
         
         mounted() {  
@@ -57,8 +59,9 @@
                 keep: {
                     title: '',
                     description: '',
-                    imgUrl: '',
+                    imageUrl: '',
                     userId: '',
+                    view: 0
                 },
                 vault: {
                     title: '',
@@ -81,6 +84,12 @@
         },
 
         methods: {
+            addKeep() {
+            this.$store.dispatch('addKeep', this.keep)
+            },
+            addVault() {
+            this.$store.dispatch('addVault', this.vault)
+            },
 
 
     //         addPost() {

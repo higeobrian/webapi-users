@@ -15,10 +15,6 @@ namespace API_Users.Repositories
       newVaultKeep.Id=id;
       return newVaultKeep;
     }
-    public void EditVaultKeep(VaultKeeps eVaultKeep)
-    {
-
-    }
     public void DeleteVaultKeep(int id)
     {
       _db.Execute("DELETE FROM vaultkeeps WHERE id=@id;",new{id});
