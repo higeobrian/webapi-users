@@ -38,9 +38,7 @@
 <!-- THIS NEEDS TO BE WRAPPED WITHIN KEEP DIV, IN ITS OWN BOX... ALONG WITH VIEW COUNT, CHECK CAPSTONE-->
 
         <div v-for="vault in vaults" v-bind:key="vault._id">
-        <router-link :to="{ name: 'Profile'}"> 
         <button @click="setActiveVault(vault)">{{vault.title}}</button>
-        </router-link>
         </div>
 
     </div>
@@ -82,10 +80,10 @@ export default {
   },
   methods: {
     addKeep() {
-      this.$store.dispatch("addKeep", this.keep);
+      this.$store.dispatch("createKeep", this.keep);
     },
     addVault() {
-      this.$store.dispatch("addVault", this.vault);
+      this.$store.dispatch("createVault", this.vault);
     },
 
     computed: {
@@ -96,9 +94,12 @@ export default {
         return this.$store.state.vault;
       },
       user() {
-          return this.$store.state.user;
+        return this.$store.state.user;
       },
     }
+      }
+    };
+    </script>
 
     //         addPost() {
     //             if (this.user._id) {
@@ -156,9 +157,6 @@ export default {
     //         unFavPost(post) {
     //             this.$store.dispatch('unFavPost', post)
     //         }
-  }
-};
-</script>
 
 
 <style scoped>

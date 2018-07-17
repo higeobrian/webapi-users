@@ -165,20 +165,10 @@ export default new vuex.Store({
                 })
         },
 
-        viewActiveKeep({ commit, dispatch, state }, keep) {          // POP UP MODAL? [HOME]
-            api.get('api/keep' + keep.id, keep)
+        viewActiveKeep({ commit, dispatch, state }, keep) {          // POP UP MODAL? WHEN ACTIVE, OFFER MENU [HOME]
+            api.get('api/keep' + keep.id, keep)         
             .then(res => {
                 commit('setActiveKeep', res.data)
-            })
-            .catch(err => {
-                console.log(err)
-            })
-        },
-        
-        addKeep({ dispatch }, payload) {                            // ADD KEEP TO SPECIFIED VAULT [HOME]
-            api.post('api/keep', payload)
-            .then(res => {
-                dispatch('setKeeps')
             })
             .catch(err => {
                 console.log(err)
@@ -197,14 +187,14 @@ export default new vuex.Store({
         
         removeKeep({ dispatch, commit }, keep) {
             api.delete('api/keep' + keep.id)                          // REMOVE KEEP FROM VAULT [PROFILE]
-            .then(() => {
+            .then(() => {                                               // removeKeep MUTATION - alters activeKeep STATE
                 commit('removeKeep', res.data)
             })
             .catch(err => {
                 console.log(err)
             })
         },
-
+        
         getUserKeeps({ dispatch, commit }, user) {                   // GETS ALL USER KEEPS [PROFILE]
             api.get('api/keep' + user.id)
             .then(res => {
@@ -214,7 +204,16 @@ export default new vuex.Store({
                 console.log(err)
             })
         },
-
+        
+        createKeep({ dispatch }, keep) {                            // CREATE NEW KEEP [HOME]
+            api.post('api/keep', keep)
+            .then(res => {
+                commit('createKeep', res.data)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        },
 
         // VAULTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
         
@@ -248,6 +247,17 @@ export default new vuex.Store({
                 console.log(err)
             })
         },
+
+        createVault({ commit, dispatch, state}, vault) {
+            api.post('api/vault', vault)
+            .then(res => {
+                commit("createVault", res.data)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        },
+
 
 
 
