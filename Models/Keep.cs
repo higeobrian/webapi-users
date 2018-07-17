@@ -9,8 +9,8 @@ public string Title { get; set; }
 public string Description { get; set; }
 public string ImageUrl { get; set; }
 public string UserId { get; set; }
-public int View { get; set; }
-public Boolean Public {get;set;}
+public int Views { get; set; }
+public int Public {get; set; }
 
 }
 

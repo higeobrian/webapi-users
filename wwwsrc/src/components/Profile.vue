@@ -3,15 +3,19 @@
 <div class="row">
 <div class="col-12">
 
-  <div class="vault">
-    {{activeVault.Title}}
-    {{activeVault.Description}}
 
-    <div v-for="keeps in activeVault" v-bind:key="keeps._id">
-    {{keeps.Title}}
-    {{keeps.Description}}
-    </div>
+  <div class="vault">
+
+    {{vaultKeeps.title}}
+    {{vaultKeeps.description}}
+
+    <div v-for="keeps in vaultKeepsVault" v-bind:key="keeps._id">
+    {{vaultKeeps.title}}
+    {{vaultKeeps.description}}
+    </div>  
+
   </div>
+
 
     </div>
   </div>
@@ -20,19 +24,31 @@
 
 <script>
 export default {
-  name: "Vault",
+  name: "Profile",
+
+    mounted() {
+        this.$store.dispatch('setVaultKeeps');
+      },
+
   data() {
     return {
-      vault: {
-        id: this.$store.state.activeVault.id
-      }
+      vaultKeeps: {
+        title: '',
+        description: '',
+        imageUrl: '',
+        views: ''
+        // id: this.$store.state.activeVault.id
+      },
+      // keep: {
+      //   title: '',
+      //   description: '',
+      // }
     };
   },
-  mounted() {
-  },
+
   computed: {
     activeVault() {
-      this.$store.dispatch("setVaultKeep", this.$store.state.activeVault.id);
+      this.$store.dispatch("setUserVault", this.$store.state.activeVault.id);
       return this.$store.state.activeVault;
     }
   },
@@ -40,9 +56,13 @@ export default {
   methods:{
     removeKeep(){
       this.$store.dispatch('removeKeep', this.keep)
+    }, 
+    viewActiveKeep(){
+      this.$store.dispatch('viewActiveKeep', this.keep)
     }
   }
 };
+
 </script>
 
 <style scoped>

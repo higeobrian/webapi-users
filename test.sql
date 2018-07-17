@@ -24,8 +24,8 @@
 --     title VARCHAR(20) NOT NULL,
 --     description VARCHAR(255) NOT NULL,
 --     imageUrl TEXT,
---     view int NOT NULL,
---     public BOOLEAN NOT NULL,
+--     views int NOT NULL,
+--     public TINYINT (1),
 --     userId VARCHAR(255),
 --     INDEX userId (userId),
 --     FOREIGN KEY (userId)
@@ -38,6 +38,7 @@
 --     id int NOT NULL AUTO_INCREMENT,
 --     vaultId int NOT NULL,
 --     keepId int NOT NULL,
+--     added int NOT NULL,
 --     userId VARCHAR(255) NOT NULL,
 
 --     PRIMARY KEY (id),

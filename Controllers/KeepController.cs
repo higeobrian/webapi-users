@@ -41,12 +41,11 @@ namespace API_Users.Controllers
 
 
     //get by id
-    [HttpGet("{id}")]
-    public Keep GetById(int id)
-    {
-      return _db.GetbyKeepId(id);
-    }
-
+    // [HttpGet("{id}")]
+    // public Keep GetById(int id)
+    // {
+    //   return _db.GetbyKeepId(id);
+    // }
 
     //get by user
     [HttpGet("user/{id}")]

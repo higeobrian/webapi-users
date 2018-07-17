@@ -3,16 +3,19 @@
 <div class="row">
 
     <div class="col-6">  
-        <form v-on:submit.prevent="addKeep(keep)">
+        <form v-on:submit.prevent="createKeep(keep)">
         <input class="input" type="text" name="keepTitle" placeholder="KeepTitle" id="keepTitle" v-model="keep.title">
         <input class="input" type="text" name="keepDescription" placeholder="KeepDecscription" id="keepDescription" v-model="keep.description">
         <input class="input" type="text" name="keepImgUrl" placeholder="keepImgUrl" id="keepImgUrl" v-model="keep.imageUrl">
+        
+        <br><input type="checkbox" name="public" value="public" v-model="keep.public">Private?<br>
+        
         <button class="btn btn-primary" type="submit">Create a new Keep</button>
         </form>
     </div>
 
     <div class="col-6">  
-        <form v-on:submit.prevent="addVault(vault)">
+        <form v-on:submit.prevent="createVault(vault)">
         <input class="input" type="text" name="vaulttitle" placeholder="VaultTitle" id="vaultTitle" v-model="vault.title">
         <input class="input" type="text" name="vaultDescription" placeholder="VaultDescription" id="vaultDescription" v-model="vault.description">
         <button class="btn btn-primary" type="submit">Create a new Vault</button>
@@ -22,44 +25,52 @@
 </div> <!-- end row -->
 
 
-
-
-
-
-
 <div class="row">
     <div class="col-12">
-        <div v-for="keep in keeps" v-bind:key="keep._id">
-        <h2>{{Keep.title}}</h2>
-        <h3>{{keep.description}}</h3>
+
+        <div v-for="keep in keeps" v-bind:key="keep.id" class="card mb-4 text-center">
+        <h3 class="card-text">{{keep.title}}</h3>
+        <h3 class="card-text">{{keep.description}}</h3>
         <img :src="keep.imageUrl" alt="">
-        </div>
 
-<!-- THIS NEEDS TO BE WRAPPED WITHIN KEEP DIV, IN ITS OWN BOX... ALONG WITH VIEW COUNT, CHECK CAPSTONE-->
-
-        <div v-for="vault in vaults" v-bind:key="vault._id">
-        <button @click="setActiveVault(vault)">{{vault.title}}</button>
+        <button class="btn" data-toggle="modal" data-target="#viewKeepModal" @click="viewCount()">View</button>
+        <button class="btn" @click="addKeepVault(keep)">Add to Vault </button>
+        <span># of Views:{{keep.views}}</span>
+        <span># added to Vaults:{{vault.added}}</span>
         </div>
 
     </div>
 </div>
 
+<div class="row">
+  <!-- <div class="col-12">
+        <select v-model="vault.id" multiple>
+  <option> <div v-for="vault in vaults" v-bind:key="vault._id"> </option>
 
-   
-    
 
-   
+</div> -->
+        <!-- USERVAULT?? IN USERVAULTS? -->
 
+        <!-- <div v-for="vault in vaults" v-bind:key="vault._id">
+        <button @click="setActiveVault(vault)">{{vault.title}}</button>
+        </div> 
+         -->
+        <!-- NEED TO CREATE DROP DOWN SELECT -->
+        <!-- NEED TO INCORPORATE ROUTER PUSH -->
+</div>
 </div>
 </template>
+
+
+
 
 <script>
 export default {
   name: "Home",
 
   mounted() {
-    this.$store.dispatch("getKeeps")
-    this.$store.dispatch("getVaults")
+    this.$store.dispatch("setKeeps");
+    this.$store.dispatch("getVaults");
   },
 
   data() {
@@ -68,42 +79,76 @@ export default {
         title: "",
         description: "",
         imageUrl: "",
-        views: 0
+        views: 0,
+        public: 0
       },
       vault: {
         title: "",
         description: ""
       },
-      public: true
+      vaultKeep: {
+        added: 0
+      }
     };
   },
   methods: {
-    addKeep() {
+    createKeep() {
       this.$store.dispatch("createKeep", this.keep);
     },
-    addVault() {
+    createVault() {
       this.$store.dispatch("createVault", this.vault);
+    },
+    viewCount() {
+      this.$store.dispatch("viewCount");
+    }, 
+    addKeepToVault() {
+      this.$store.dispatch("addKeepToVault", this.keep);
+    }, 
+    setActiveVault() {
+      this.$store.dispatch("setActiveVault", this.vault);
     }
-},
+  },
 
-    computed: {
-      keeps() {
-        return this.$store.state.keep;
-      },
-      vaults() {
-        return this.$store.state.vault;
-      },
-      user() {
-        return this.$store.state.user;
-      },
+
+
+  computed: {
+    keeps() {
+      return this.$store.state.keeps;
+    },
+    vaults() {
+      return this.$store.state.vaults;
+    },
+
+
+    vaultKeeps() {
+      return this.$store.state.vaultKeeps;
+    },
+    user() {
+      return this.$store.state.user;
     }
-
-
-
+  }
 };
 
+</script>
 
-    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!--
             // addPost() {
             //     if (this.user._id) {
@@ -161,9 +206,8 @@ export default {
             // unFavPost(post) {
             //     this.$store.dispatch('unFavPost', post)
             // }
+
 -->
-
-
 <style scoped>
 /* .card{
 background-image: url('../../D20.png');

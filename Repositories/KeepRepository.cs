@@ -28,32 +28,33 @@ public class KeepRepository : DbContext
     // Get All Keep
     public IEnumerable<Keep> GetAll()
     {
-      return _db.Query<Keep>("SELECT * FROM keeps;");
+      return _db.Query<Keep>("SELECT * FROM keeps WHERE public = 1;");
     }
 
-    // Get by User
+    // Get by Userid
     public IEnumerable<Keep> GetByUserId(int id)
     {
       return _db.Query<Keep>("SELECT * FROM keeps WHERE UserId = @id;", new { id });
     }
 
     // Get by Id
-    public Keep GetbyKeepId(int id)
-    {
-      return _db.QueryFirstOrDefault<Keep>("SELECT * FROM keeps WHERE id = @id;", new { id });
-    }
+    // public Keep GetbyKeepId(int id)
+    // {
+    //   return _db.QueryFirstOrDefault<Keep>("SELECT * FROM keeps WHERE id = @id;", new { id });
+    // }
 
     // Edit
     public Keep EditKeep(int id, Keep keep)
     {
       keep.Id = id;
+      keep.Views++;
       var i = _db.Execute(@"
                 UPDATE keeps SET
                     title = @Title,
                     description = @Description,
                     imageUrl = @ImageUrl,
-                    view = @View,
-                    userId = @UserId
+                    views = @Views
+                    public = @Public
                 WHERE id = @Id
             ", keep);
       if (i > 0)
