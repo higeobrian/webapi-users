@@ -19,78 +19,86 @@
         </form>
     </div>
 
-    <div class="row">
+</div> <!-- end row -->
+
+
+
+
+
+
+
+<div class="row">
     <div class="col-12">
         <div v-for="keep in keeps" v-bind:key="keep._id">
         <h2>{{Keep.title}}</h2>
         <h3>{{keep.description}}</h3>
         <img :src="keep.imageUrl" alt="">
         </div>
-    </div>
-    </div>
 
+<!-- THIS NEEDS TO BE WRAPPED WITHIN KEEP DIV, IN ITS OWN BOX... ALONG WITH VIEW COUNT, CHECK CAPSTONE-->
 
-    <div class="row">
-        <div class="col-12">
-    
         <div v-for="vault in vaults" v-bind:key="vault._id">
         <router-link :to="{ name: 'Profile'}"> 
         <button @click="setActiveVault(vault)">{{vault.title}}</button>
         </router-link>
-
         </div>
 
-        </div>
     </div>
-
 </div>
+
+
+   
+    
+
+   
+
 </div>
 </template>
 
 <script>
-    export default  {
-        name: 'Home',
-        
-        mounted() {  
-        },
+export default {
+  name: "Home",
 
-        data() {
-            return {
-                keep: {
-                    title: '',
-                    description: '',
-                    imageUrl: '',
-                    userId: '',
-                    view: 0
-                },
-                vault: {
-                    title: '',
-                    description: ''
-                },
-                public: true,
-            }
-        },
+  mounted() {
+    this.$store.dispatch("getKeeps")
+    this.$store.dispatch("getVaults")
+  },
 
-        computed: {
-            activeKeep() {
-                return this.$store.state.activeKeep
-            },
-            keeps() {
-                return this.$store.state.keeps
-            },
-            vaults() {
-                return this.$store.state.vaults
-            }
-        },
+  data() {
+    return {
+      keep: {
+        title: "",
+        description: "",
+        imageUrl: "",
+        userId: "",
+        views: 0
+      },
+      vault: {
+        title: "",
+        description: ""
+      },
+      public: true
+    };
+  },
+  methods: {
+    addKeep() {
+      this.$store.dispatch("addKeep", this.keep);
+    },
+    addVault() {
+      this.$store.dispatch("addVault", this.vault);
+    },
 
-        methods: {
-            addKeep() {
-            this.$store.dispatch('addKeep', this.keep)
-            },
-            addVault() {
-            this.$store.dispatch('addVault', this.vault)
-            },
-
+    computed: {
+      keeps() {
+        return this.$store.state.keep;
+      },
+      vaults() {
+        return this.$store.state.vault;
+      },
+      user() {
+          return this.$store.state.user;
+      },
+    }
 
     //         addPost() {
     //             if (this.user._id) {
@@ -144,12 +152,12 @@
     //         favPost(post) {
     //             this.$store.dispatch('favPost', post)
     //         },
-            
+
     //         unFavPost(post) {
     //             this.$store.dispatch('unFavPost', post)
     //         }
-        }
-    }
+  }
+};
 </script>
 
 
