@@ -53,7 +53,7 @@ public class KeepRepository : DbContext
                     title = @Title,
                     description = @Description,
                     imageUrl = @ImageUrl,
-                    views = @Views
+                    views = @Views,
                     public = @Public
                 WHERE id = @Id
             ", keep);
@@ -64,7 +64,7 @@ public class KeepRepository : DbContext
       return null;
     }
 
-    // Delete
+    // Delete 
     public bool DeleteKeep(int id, string userId)
     {
       var i = _db.Execute(@"

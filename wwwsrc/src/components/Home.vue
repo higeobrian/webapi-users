@@ -24,7 +24,6 @@
 
 </div> <!-- end row -->
 
-
 <div class="row">
     <div class="col-12">
 
@@ -33,7 +32,7 @@
         <h3 class="card-text">{{keep.description}}</h3>
         <img :src="keep.imageUrl" alt="">
 
-        <button class="btn" data-toggle="modal" data-target="#viewKeepModal" @click="viewCount()">View</button>
+        <button class="btn" data-toggle="modal" data-target="#viewKeepModal" @click="viewCount(keep)">View</button>
         <button class="btn" @click="addKeepVault(keep)">Add to Vault </button>
         <span># of Views:{{keep.views}}</span>
         <span># added to Vaults:{{vault.added}}</span>
@@ -43,25 +42,16 @@
 </div>
 
 <div class="row">
-  <!-- <div class="col-12">
-        <select v-model="vault.id" multiple>
-  <option> <div v-for="vault in vaults" v-bind:key="vault._id"> </option>
-
-
-</div> -->
-        <!-- USERVAULT?? IN USERVAULTS? -->
-
-        <!-- <div v-for="vault in vaults" v-bind:key="vault._id">
+   <div class="col-12">     
+       <div v-for="vault in vaults" v-bind:key="vault._id">
         <button @click="setActiveVault(vault)">{{vault.title}}</button>
         </div> 
-         -->
+   </div></div>
         <!-- NEED TO CREATE DROP DOWN SELECT -->
         <!-- NEED TO INCORPORATE ROUTER PUSH -->
 </div>
 </div>
 </template>
-
-
 
 
 <script>
@@ -99,7 +89,7 @@ export default {
       this.$store.dispatch("createVault", this.vault);
     },
     viewCount() {
-      this.$store.dispatch("viewCount");
+      this.$store.dispatch("viewCount", this.keep);
     }, 
     addKeepToVault() {
       this.$store.dispatch("addKeepToVault", this.keep);

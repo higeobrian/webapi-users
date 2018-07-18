@@ -31,14 +31,12 @@ namespace API_Users.Controllers
       return null;
     }
 
-
     //get all 
     [HttpGet]
     public IEnumerable<Keep> GetAll()
     {
       return _db.GetAll();
     }
-
 
     //get by id
     // [HttpGet("{id}")]
