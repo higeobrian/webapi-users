@@ -17,8 +17,8 @@ public class KeepRepository : DbContext
     public Keep CreateKeep(Keep newKeep)
     {
       int id = _db.ExecuteScalar<int>(@"
-                INSERT INTO keeps (title, description, imageUrl, userId, view, public)
-                VALUES (@Title, @Description, @ImageUrl, @UserId, @View, @Public);
+                INSERT INTO keeps (title, description, imageUrl, userId, views, public)
+                VALUES (@Title, @Description, @ImageUrl, @UserId, @Views, @Public);
                 SELECT LAST_INSERT_ID();
             ", newKeep);
       newKeep.Id = id;

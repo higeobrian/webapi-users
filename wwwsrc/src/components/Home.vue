@@ -1,7 +1,7 @@
 <template>
 <div class="container">
-<div class="row">
-    
+
+<div class="row">    
     <div class="col-6 align-self-center"><br>  
         <form v-on:submit.prevent="createKeep(keep)">
         <input class="input" type="text" name="keepTitle" placeholder="KeepTitle" id="keepTitle" v-model="keep.title">
@@ -23,57 +23,58 @@
 </div> <!-- end row -->
 <br>
 
-<div class="row">
-    <div class="col-12 align-self-center">
-        <div v-for="keep in keeps" v-bind:key="keep.id">
-        <h3 class="card-text">{{keep.title}}</h3>
-        <h3 class="card-text">{{keep.description}}</h3>
-        <img :src="keep.imageUrl" alt="">
-</div>
-</div>
 
 
-<div class="viewKeepModal">
-
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#viewKeepModal" @click="setActiveKeep(keep)">
-  Click to View and Add To Vault
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-
-      <div class="modal-body"> <!-- BODY -->
-        <h4> class="card-text">{{keep.title}}</h4>
-        <h4> class="card-text">{{keep.description}}</h4>
-        <img :src="keep.imageUrl" alt="">
-        <div class="view"># of Views:{{keep.views}}</div>
-        <div class="added"># added to Vaults:{{vault.added}}</div>
-      </div>
-
-      <div class="modal-footer"> <!-- FOOTER -->
-         <select v-model="vault">
-      <option disabled value=''>Select A Vault: </option>
-      <option v-for="vault in vaults" :key="vault.id" :value="vault">{{vault.title}}</option>
-      </select>
-      <button @click="addKeepToVault(keep)">Add Keep To Vault: </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-</div>    
+     <!--Display Keep Card-->
+      
+                <div class="row">
+                    <div class="col-12">
+                        <div v-for="keep in keeps" v-if="keep.public==1" :key=" keep.id " class="card mb-4 text-center ">
+                            <h3 class="card-text">Keep Title: {{keep.title}}</h3>
+                            <h3 class="card-text">Keep Description: {{keep.description}}</h3>
+                            <div class="container ">
+                                <img :src="keep.imageUrl " alt=" ">
+                                <button class="btn " data-toggle="modal " data-target="#viewingKeepModal" @click="addView(keep)">View</button>
+                                    <button class="btn2 ">Added:{{vaultKeep.added}}</button>
+                                    <button class="btn3 ">Views:{{keep.views}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+     
 
 
 
-</div>
+<!--View Keep Model-->
+            <div class="modal fade" id="viewKeepModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+
+                            <h5 class="modal-title" id="exampleModalLabel">{{keep.title}}</h5>
+
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <img :src="keep.imageUrl" alt="">
+                            <h3>{{keep.description}}</h3>
+
+                            <div class="dropdown">
+                                <select v-model="vault">
+                                    <option disabled value = "">Add to a Vault</option>
+                                    <option v-for='vault in vaults' :key="vault.id" :value="vault">{{vault.title}}</option>
+                                </select>
+                            </div>
+                            <button type="button" @click='addToVault' class="btn btn-secondary" data-dismiss="modal">Add to a Vault</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 </div>
 </template>
 
@@ -85,6 +86,7 @@ export default {
   mounted() {
     this.$store.dispatch("setKeeps");
     this.$store.dispatch("getVaults");
+    // this.$store.dispatch("setUser");
   },
 
   data() {
@@ -100,11 +102,14 @@ export default {
         title: "",
         description: ""
       },
+      viewKeep: {
+      },
       vaultKeep: {
         added: 0
       }
     };
   },
+
   methods: {
     createKeep() {
       this.$store.dispatch("createKeep", this.keep);
@@ -114,19 +119,32 @@ export default {
     },
     viewCount() {
       this.$store.dispatch("viewCount", this.keep);
-    }, 
+    },
     addKeepToVault() {
       this.$store.dispatch("addKeepToVault", this.keep);
-    }, 
+    },
     setActiveVault() {
       this.$store.dispatch("setActiveVault", this.vault);
     },
     setActiveKeep() {
       this.$store.dispatch("SetActiveKeep", this.keep);
+    },
+
+    addView(keep) {
+      this.$store.dispatch('updateKeep', keep)
+      this.viewKeep = keep
+      $('#viewKeepModal').modal('show')
+    },
+    addToVault(){
+      if (!this.vault.id) {
+      alert("Please select Vault")
+      return
     }
+      this.$store.dispatch('updateKeep', this.keep)
+      this.$store.dispatch('addToVault', {keepId: this.keep.id, vaultId: this.vault.id})
+    }
+
   },
-
-
 
   computed: {
     keeps() {
@@ -135,8 +153,6 @@ export default {
     vaults() {
       return this.$store.state.vaults;
     },
-
-
     vaultKeeps() {
       return this.$store.state.vaultKeeps;
     },
@@ -145,7 +161,6 @@ export default {
     }
   }
 };
-
 </script>
 
 

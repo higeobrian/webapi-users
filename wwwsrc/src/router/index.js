@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Auth from '@/components/Auth'
 import Home from '@/components/Home'
 import Profile from '@/components/Profile'
+import Ukeeps from '@/components/Ukeeps'
 
 
 Vue.use(Router)
@@ -23,6 +24,12 @@ export default new Router({
     path: '/profile',
     name: 'Profile',
     component: Profile
+    },
+    {
+    path: '/Ukeeps',
+    name: 'Ukeeps',
+    component: Ukeeps
     }
+    
   ]
 })
