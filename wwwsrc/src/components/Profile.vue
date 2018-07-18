@@ -4,18 +4,17 @@
 <div class="col-12">
 
 <!--Display Vault Card-->
-   <div class="row">
+<div class="row">
                     <div class="col-12">
                         <div v-for="vault in vaults" :key="vault.id " class="card mb-4 text-center ">
                             <h3 class="card-text">Vault Title: {{vault.title}}</h3>
                             <h3 class="card-text">Vault Description: {{vault.description}}</h3>
-
                         </div>
                     </div>
-                </div>
+</div>
      
 <!--View Vault Model-->
-            <div class="modal fade" id="viewKeepModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="viewKeepModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -41,7 +40,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+</div>
 
 
 
@@ -55,12 +54,12 @@
 </template>
 
 <script>
-import Ukeeps from './Ukeeps'
+import Ukeeps from "./Ukeeps";
 export default {
   name: "Profile",
   components: {
-      Ukeeps,
-},
+    Ukeeps
+  },
 
   mounted() {
     this.$store.dispatch("getUserKeeps");
@@ -90,7 +89,7 @@ export default {
   },
 
   computed: {
-     keeps() {
+    keeps() {
       return this.$store.state.keeps;
     },
     vaults() {
@@ -102,7 +101,6 @@ export default {
     user() {
       return this.$store.state.user;
     }
-    
   },
 
   methods: {

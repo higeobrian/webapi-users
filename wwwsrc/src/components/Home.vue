@@ -7,6 +7,7 @@
         <input class="input" type="text" name="keepTitle" placeholder="KeepTitle" id="keepTitle" v-model="keep.title">
         <input class="input" type="text" name="keepDescription" placeholder="KeepDecscription" id="keepDescription" v-model="keep.description">
         <input class="input" type="text" name="keepImgUrl" placeholder="keepImgUrl" id="keepImgUrl" v-model="keep.imageUrl">
+        <!-- VIEW UNDEFINED --> 
         <br><input type="checkbox" name="public" value="public" v-model="keep.public">Private?<br>
         <button class="btn btn-primary" type="submit">Create a new Keep</button>
         </form>
@@ -23,27 +24,22 @@
 </div> <!-- end row -->
 <br>
 
-
-
      <!--Display Keep Card-->
       
-                <div class="row">
-                    <div class="col-12">
-                        <div v-for="keep in keeps" v-if="keep.public==1" :key=" keep.id " class="card mb-4 text-center ">
-                            <h3 class="card-text">Keep Title: {{keep.title}}</h3>
-                            <h3 class="card-text">Keep Description: {{keep.description}}</h3>
-                            <div class="container ">
-                                <img :src="keep.imageUrl " alt=" ">
-                                <button class="btn " data-toggle="modal " data-target="#viewingKeepModal" @click="addView(keep)">View</button>
-                                    <button class="btn2 ">Added:{{vaultKeep.added}}</button>
-                                    <button class="btn3 ">Views:{{keep.views}}</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-     
-
-
+      <div class="row">
+      <div class="col-12">
+     <div v-for="keep in keeps" v-if="keep.public==1" :key=" keep.id " class="card mb-4 text-center">
+       <h3 class="card-text">Keep Title: {{keep.title}}</h3>
+      <h3 class="card-text">Keep Description: {{keep.description}}</h3>
+      <div class="container">
+      <img :src="keep.imageUrl " alt=" ">
+     <button class="btn" data-toggle="modal" data-target="#viewKeepModal" @click="addView(keep)">View</button>
+     <button class="btn2">Added:{{vaultKeep.added}}</button>
+    <button class="btn3">Views:{{keep.views}}</button>
+   </div>
+ </div>
+</div>
+ </div>
 
 <!--View Keep Model-->
             <div class="modal fade" id="viewKeepModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -68,7 +64,7 @@
                                     <option v-for='vault in vaults' :key="vault.id" :value="vault">{{vault.title}}</option>
                                 </select>
                             </div>
-                            <button type="button" @click='addToVault' class="btn btn-secondary" data-dismiss="modal">Add to a Vault</button>
+                            <button type="button" @click="addKeepToVault(keep)" class="btn btn-secondary" data-dismiss="modal">Add to a Vault</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
@@ -77,7 +73,6 @@
 
 </div>
 </template>
-
 
 <script>
 export default {
@@ -95,18 +90,17 @@ export default {
         title: "",
         description: "",
         imageUrl: "",
-        views: 0,
+        // views: 0,
         public: 0
+      },
+      userKeeps: {
+        
       },
       vault: {
         title: "",
         description: ""
       },
-      viewKeep: {
-      },
-      vaultKeep: {
-        added: 0
-      }
+      viewKeep: {}
     };
   },
 
@@ -117,33 +111,37 @@ export default {
     createVault() {
       this.$store.dispatch("createVault", this.vault);
     },
-    viewCount() {
-      this.$store.dispatch("viewCount", this.keep);
-    },
-    addKeepToVault() {
-      this.$store.dispatch("addKeepToVault", this.keep);
-    },
-    setActiveVault() {
-      this.$store.dispatch("setActiveVault", this.vault);
-    },
-    setActiveKeep() {
-      this.$store.dispatch("SetActiveKeep", this.keep);
-    },
 
     addView(keep) {
-      this.$store.dispatch('updateKeep', keep)
-      this.viewKeep = keep
-      $('#viewKeepModal').modal('show')
+      this.$store.dispatch("viewActiveKeep", keep);
+      this.viewKeep = keep;
+      $("#viewKeepModal").modal("show");
     },
-    addToVault(){
+
+    addKeepToVault(keep) {
       if (!this.vault.id) {
-      alert("Please select Vault")
-      return
-    }
-      this.$store.dispatch('updateKeep', this.keep)
-      this.$store.dispatch('addToVault', {keepId: this.keep.id, vaultId: this.vault.id})
+        alert("Please select Vault");
+        return;
+      }
+      this.$store.dispatch("viewKeep", this.keep);
+      this.$store.dispatch("addToVault", {
+        keepId: this.keep.id,
+        vaultId: this.vault.id
+      });
     }
 
+    // viewCount() {
+    //   this.$store.dispatch("viewCount", this.keep);
+    // },
+    // addKeepToVault() {
+    //   this.$store.dispatch("addKeepToVault", this.keep);
+    // },
+    // setActiveVault() {
+    //   this.$store.dispatch("setActiveVault", this.vault);
+    // },
+    // setActiveKeep() {
+    //   this.$store.dispatch("SetActiveKeep", this.keep);
+    // }
   },
 
   computed: {

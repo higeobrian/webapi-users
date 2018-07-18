@@ -1,14 +1,15 @@
 <template>
 <div class="container">
+<div class="row">
+<div class="col-12">
+  
+<!--KEEP BY VAULT ID // how to implement this? Mount? -->
 
-     <!--Display vaultKeep byVaultId Card-->
-                <div class="row">
-                    <div class="col-12">
-                        <div v-for="keep in keeps" :key=" keep.id " class="card mb-4 text-center "> 
-                            <h3><p>Keep Title: {{keep.title}}</p></h3>
-                            <h3><p>Keep Description: {{keep.description}}</P></h3>
-                            <img :src="keep.imageUrl " alt=" ">
-                            <button @click="RemoveKeep(keep)">Remove Keep From Vault</button>
+        <div v-for="keep in keeps" :key=" keep.id " class="card mb-4 text-center"> 
+        <h3><p>Keep Title: {{keep.title}}</p></h3>
+        <h3><p>Keep Description: {{keep.description}}</P></h3>
+        <img :src="keep.imageUrl " alt=" ">
+        <button @click="RemoveKeep(keep)">Remove Keep From Vault</button>
 
         <form v-on:submit.prevent="editKeep(keep)">
         <input class="input" type="text" name="keepTitle" placeholder="KeepTitle" id="keepTitle" v-model="keep.title">
@@ -18,9 +19,9 @@
         <button class="btn btn-primary" type="submit">Edit Keep</button>
         </form>
                             
-                            </div>
-                        </div>
-                    </div>
+  </div>
+  </div>
+  </div>
 
 </div>
 </template>
@@ -28,11 +29,11 @@
 
 <script>
 export default {
-  name: "UserKeeps",
+  name: "Ukeeps",
 
-  mounted() {
-    this.$store.dispatch("setKeeps");
-    this.$store.dispatch("getVaults");
+  mounted() {                                                         // everything is now being added to keepvaults
+    this.$store.dispatch("setUserKeeps");                                 // userkeeps [] deleted
+    this.$store.dispatch("getActiveVault");
     // this.$store.dispatch("setUser");
   },
 
@@ -42,29 +43,17 @@ export default {
         title: "",
         description: "",
         imageUrl: "",
-        views: 0,
-        public: 0
-      },
-      vault: {
-        title: "",
-        description: ""
-      },
-      viewKeep: {
-      },
-      vaultKeep: {
-        added: 0
-      }
+      }  
     };
   },
 
   methods: {
     editKeep() {
-      this.$store.dispatch("createKeep", this.keep);
+      this.$store.dispatch("editKeep", this.keep);
     },
     removeKeep() {
-      this.$store.dispatch("createKeep", this.keep);
+      this.$store.dispatch("removeKeep", this.keep);
     }
-    
   },
 
   computed: {
@@ -76,9 +65,6 @@ export default {
     },
     user() {
       return this.$store.state.user;
-    },
-    userKeeps() {
-        return this.$store.state.userKeeps;
     }
   }
 };
