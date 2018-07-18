@@ -42,10 +42,14 @@
 </div>
 
 <div class="row">
-   <div class="col-12">     
+   <div class="col-12">  
+
        <div v-for="vault in vaults" v-bind:key="vault._id">
-        <button @click="setActiveVault(vault)">{{vault.title}}</button>
+        <router-link :to="{ name: 'Profile'}">
+        <button @click="setVaultKeeps(vault)">{{vault.title}}</button>
+        </router-link>
         </div> 
+
    </div></div>
         <!-- NEED TO CREATE DROP DOWN SELECT -->
         <!-- NEED TO INCORPORATE ROUTER PUSH -->

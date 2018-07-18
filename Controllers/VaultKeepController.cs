@@ -13,11 +13,13 @@ namespace API_Users.Controllers
     {
       db=repo;
     }
+    
     [HttpGet("{userId}")]
     public IEnumerable<VaultKeeps> GetAllByUserId(string userId)
     {
       return db.GetVaultKeepsByUserId(userId);
     }
+
     [HttpPost]
     public VaultKeeps Create([FromBody]VaultKeeps newVaultKeep)
     {
@@ -27,11 +29,13 @@ namespace API_Users.Controllers
       }
       return null;
     }
+    
     [HttpDelete("{id}")]
     public void Delete(int id)
     {
       db.DeleteVaultKeep(id);
     }
+
     [HttpPut("{id}")]
     public void EditVaultKeep()
     {}
