@@ -1,20 +1,18 @@
 <template>
 <div class="container">
 <div class="row">
-
-    <div class="col-6">  
+    
+    <div class="col-6 align-self-center"><br>  
         <form v-on:submit.prevent="createKeep(keep)">
         <input class="input" type="text" name="keepTitle" placeholder="KeepTitle" id="keepTitle" v-model="keep.title">
         <input class="input" type="text" name="keepDescription" placeholder="KeepDecscription" id="keepDescription" v-model="keep.description">
         <input class="input" type="text" name="keepImgUrl" placeholder="keepImgUrl" id="keepImgUrl" v-model="keep.imageUrl">
-        
         <br><input type="checkbox" name="public" value="public" v-model="keep.public">Private?<br>
-        
         <button class="btn btn-primary" type="submit">Create a new Keep</button>
         </form>
     </div>
 
-    <div class="col-6">  
+    <div class="col-6 align-self-center">  
         <form v-on:submit.prevent="createVault(vault)">
         <input class="input" type="text" name="vaulttitle" placeholder="VaultTitle" id="vaultTitle" v-model="vault.title">
         <input class="input" type="text" name="vaultDescription" placeholder="VaultDescription" id="vaultDescription" v-model="vault.description">
@@ -23,36 +21,58 @@
     </div>
 
 </div> <!-- end row -->
+<br>
 
 <div class="row">
-    <div class="col-12">
-
-        <div v-for="keep in keeps" v-bind:key="keep.id" class="card mb-4 text-center">
+    <div class="col-12 align-self-center">
+        <div v-for="keep in keeps" v-bind:key="keep.id">
         <h3 class="card-text">{{keep.title}}</h3>
         <h3 class="card-text">{{keep.description}}</h3>
         <img :src="keep.imageUrl" alt="">
-
-        <button class="btn" data-toggle="modal" data-target="#viewKeepModal" @click="viewCount(keep)">View</button>
-        <button class="btn" @click="addKeepVault(keep)">Add to Vault </button>
-        <span># of Views:{{keep.views}}</span>
-        <span># added to Vaults:{{vault.added}}</span>
-        </div>
-
-    </div>
+</div>
 </div>
 
-<div class="row">
-   <div class="col-12">  
 
-       <div v-for="vault in vaults" v-bind:key="vault._id">
-        <router-link :to="{ name: 'Profile'}">
-        <button @click="setVaultKeeps(vault)">{{vault.title}}</button>
-        </router-link>
-        </div> 
+<div class="viewKeepModal">
 
-   </div></div>
-        <!-- NEED TO CREATE DROP DOWN SELECT -->
-        <!-- NEED TO INCORPORATE ROUTER PUSH -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#viewKeepModal" @click="setActiveKeep(keep)">
+  Click to View and Add To Vault
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body"> <!-- BODY -->
+        <h4> class="card-text">{{keep.title}}</h4>
+        <h4> class="card-text">{{keep.description}}</h4>
+        <img :src="keep.imageUrl" alt="">
+        <div class="view"># of Views:{{keep.views}}</div>
+        <div class="added"># added to Vaults:{{vault.added}}</div>
+      </div>
+
+      <div class="modal-footer"> <!-- FOOTER -->
+         <select v-model="vault">
+      <option disabled value=''>Select A Vault: </option>
+      <option v-for="vault in vaults" :key="vault.id" :value="vault">{{vault.title}}</option>
+      </select>
+      <button @click="addKeepToVault(keep)">Add Keep To Vault: </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>    
+
+
+
 </div>
 </div>
 </template>
@@ -100,6 +120,9 @@ export default {
     }, 
     setActiveVault() {
       this.$store.dispatch("setActiveVault", this.vault);
+    },
+    setActiveKeep() {
+      this.$store.dispatch("SetActiveKeep", this.keep);
     }
   },
 

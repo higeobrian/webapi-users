@@ -31,7 +31,7 @@ export default new vuex.Store({
         user: {},
         keeps: [],
         vaults: [],
-        views: [],
+        // views: [],
         vaultKeeps: [],
         public: {},
         userKeeps: [],
@@ -46,8 +46,8 @@ export default new vuex.Store({
         deleteUser(state, user) {
             state.user = user
         },
-        viewCount(state, views) {
-            state.views = views
+        viewCount(state, keep) {
+            state.keeps = keep
         },
 
         // KEEP 
@@ -212,7 +212,8 @@ export default new vuex.Store({
                 })
         },
 
-        setActiveKeep({ commit }, payload) {                        // GET ACTIVE KEEP [HOME] and [PROFILE]
+        setActiveKeep({ commit }, payload) {   
+            payload.views++                     // GET ACTIVE KEEP [HOME] and [PROFILE]
             api.get('api/keep/' + keep.id, payload)
                 .then(res => {
                     commit("getKeep", res.data)

@@ -4,6 +4,17 @@
 <div class="col-12">
 
 
+
+       <div v-for="vault in vaults" v-bind:key="vault.id">
+        <router-link :to="{ name: 'Profile'}">
+        <button @click="setVaultKeeps(vault)">
+          {{vault.title}}</button>
+        </router-link>
+        </div> 
+
+  
+
+
   <div class="vault">   <!-- maybe add drop down select activeVault? @click -->
 
     {{vault.title}}
@@ -11,15 +22,22 @@
 
   </div>
 
+
+
+
+
   <div class="keeps">
+  <div class="row">
+  <div class="col-12">  
 
     <div v-for="keeps in vaultKeepsVault" v-bind:key="keeps._id">
     {{keeps.title}}
     {{keeps.description}}
     <img :src="keep.imageUrl" alt="">
-
     </div>  
 
+  </div>
+  </div>
   </div>
 
 
@@ -32,28 +50,28 @@
 export default {
   name: "Profile",
 
-    mounted() {
-        this.$store.dispatch('getUserKeeps');
-        this.$store.dispatch('getVaults')
-      },
+  mounted() {
+    this.$store.dispatch("getUserKeeps");
+    this.$store.dispatch("getVaults");
+  },
 
   data() {
     return {
       Keeps: {
-        title: '',
-        description: '',
-        imageUrl: '',
+        title: "",
+        description: "",
+        imageUrl: "",
         views: 0
         // id: this.$store.state.activeVault.id
       },
       vaultKeeps: {
-        title: '',
-        description: '',
+        title: "",
+        description: "",
         public: 0
       },
       vaults: {
-        title: '',
-        description: ''
+        title: "",
+        description: ""
       }
     };
   },
@@ -65,16 +83,15 @@ export default {
     }
   },
 
-  methods:{
-    removeKeep(){
-      this.$store.dispatch('removeKeep', this.keep)
-    }, 
-    viewActiveKeep(){
-      this.$store.dispatch('viewActiveKeep', this.keep)
+  methods: {
+    removeKeep() {
+      this.$store.dispatch("removeKeep", this.keep);
+    },
+    viewActiveKeep() {
+      this.$store.dispatch("viewActiveKeep", this.keep);
     }
   }
 };
-
 </script>
 
 <style scoped>

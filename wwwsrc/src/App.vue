@@ -53,13 +53,13 @@ methods: {
 </script>
 
 <style>
-/* body {
-  background: #67020a;
+body {
+  background: #dd7c21;
 }
-.top-header {
+/* .top-header {
   background-image: url("../D20.png");
-}
-#app {
+} */
+/* #app {
   font-family: "Metal Mania", cursive;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
