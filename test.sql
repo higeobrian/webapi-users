@@ -1,3 +1,5 @@
+-- DROP TABLE keeps;
+
 -- CREATE TABLE users (
 --     id VARCHAR(255) NOT NULL,
 --     username VARCHAR(20) NOT NULL,
@@ -23,8 +25,8 @@
 --     id int NOT NULL AUTO_INCREMENT,
 --     title VARCHAR(20) NOT NULL,
 --     description VARCHAR(255) NOT NULL,
---     imageUrl TEXT,
---     views int NOT NULL,
+--     imageUrl VARCHAR(255),
+--     view int NOT NULL,
 --     public TINYINT (1),
 --     userId VARCHAR(255),
 --     INDEX userId (userId),

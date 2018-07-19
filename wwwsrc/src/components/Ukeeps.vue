@@ -32,8 +32,9 @@ export default {
   name: "Ukeeps",
 
   mounted() {                                                         // everything is now being added to keepvaults
-    this.$store.dispatch("setUserKeeps");                                 // userkeeps [] deleted
+    this.$store.dispatch("getUserKeeps");                                 // userkeeps [] deleted
     this.$store.dispatch("getActiveVault");
+    this.$store.dispatch("getUserVaults");
     // this.$store.dispatch("setUser");
   },
 

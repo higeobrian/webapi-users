@@ -28,13 +28,13 @@
       
       <div class="row">
       <div class="col-12">
-     <div v-for="keep in keeps" v-if="keep.public==1" :key=" keep.id " class="card mb-4 text-center">
+     <div v-for="keep in keeps" v-if="!keep.public" :key=" keep.id " class="card mb-4 text-center">
        <h3 class="card-text">Keep Title: {{keep.title}}</h3>
       <h3 class="card-text">Keep Description: {{keep.description}}</h3>
       <div class="container">
       <img :src="keep.imageUrl " alt=" ">
      <button class="btn" data-toggle="modal" data-target="#viewKeepModal" @click="addView(keep)">View</button>
-     <button class="btn2">Added:{{vaultKeep.added}}</button>
+     <button class="btn2">Added:{{keep.added}}</button>
     <button class="btn3">Views:{{keep.views}}</button>
    </div>
  </div>
@@ -79,7 +79,7 @@ export default {
   name: "Home",
 
   mounted() {
-    this.$store.dispatch("setKeeps");
+    this.$store.dispatch("getKeeps");
     this.$store.dispatch("getVaults");
     // this.$store.dispatch("setUser");
   },
