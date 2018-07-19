@@ -38,9 +38,10 @@
 <script>
 export default {
   name: "Ukeeps",
+  props: ['vaultId'],
 
   mounted() {                                                         
-    this.$store.dispatch("getVaultKeeps", this.vaultId);                               
+    this.$store.dispatch("getVaultKeeps", this.vaultId)                              
   },
 
   data() {
@@ -83,6 +84,9 @@ export default {
     user() {
       return this.$store.state.user
     },
+    // vaults() {
+    //   return this.$store.state.vaults
+    // }
   }
 };
 </script>

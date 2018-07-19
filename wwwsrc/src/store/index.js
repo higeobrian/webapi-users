@@ -124,8 +124,8 @@ export default new vuex.Store({
         },
 
 
-        getVaultKeeps({ commit }, vaultkeeps) {
-            api.get('api/vaultkeeps/' + vault.id, vaultkeeps)
+        getVaultKeeps({ commit }, vaultId) {
+            api.get('api/vaultkeeps/' + vaultId)
                 .then(res => {
                     commit("getVaultKeeps", res.data)                 // gets vaultkeeps by vault id from vaults []
                 })
