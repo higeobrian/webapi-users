@@ -10,7 +10,10 @@ public string Description { get; set; }
 public string ImageUrl { get; set; }
 public string UserId { get; set; }
 public int View { get; set; }
+public int Added { get; set; }
 public int Public {get; set; }
+
+
 
 }
 

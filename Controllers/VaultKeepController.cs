@@ -5,39 +5,48 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API_Users.Controllers
 {
-  [Route("api/[controller]")]
-  public class VaultKeepsController:Controller
-  {
-    private readonly VaultKeepsRepository db;
-    public VaultKeepsController(VaultKeepsRepository repo)
+    [Route("api/[controller]")]
+    public class VaultKeepsController : Controller
     {
-      db=repo;
-    }
-    
-    [HttpGet("{userId}")]
-    public IEnumerable<VaultKeeps> GetAllByUserId(string userId)
-    {
-      return db.GetVaultKeepsByUserId(userId);
-    }
+        private readonly VaultKeepsRepository db;
+        public VaultKeepsController(VaultKeepsRepository repo)
+        {
+            db = repo;
+        }
 
-    [HttpPost]
-    public VaultKeeps Create([FromBody]VaultKeeps newVaultKeep)
-    {
-      if(ModelState.IsValid)
-      {
-        return db.CreateVaultKeep(newVaultKeep);
-      }
-      return null;
-    }
-    
-    [HttpDelete("{id}")]
-    public void Delete(int id)
-    {
-      db.DeleteVaultKeep(id);
-    }
+        // [HttpGet]
+        // public IEnumerable<VaultKeeps> GetAllByUserId()
+        // {
+        //     var userId = HttpContext.User.Identity.Name;
+        //     return db.GetVaultKeepsByUserId(userId);
+        // }
 
-    [HttpPut("{id}")]
-    public void EditVaultKeep()
-    {}
-  }
+      // [Authorize] <-- need to set this up to use it. Security/Permission.
+
+
+        [HttpGet("{vaultId}")]
+        public IEnumerable<Keep> GetKeepsByVaultId(string vaultId)
+        {
+            return db.GetKeepByVaultId(vaultId);
+        }
+
+        [HttpPost]
+        public VaultKeeps Create([FromBody]VaultKeeps newVaultKeep)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = HttpContext.User;
+                newVaultKeep.UserId = user.Identity.Name;
+                return db.CreateVaultKeep(newVaultKeep);
+            }
+            return null;
+        }
+
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+            db.DeleteVaultKeep(id);
+        }
+
+    }
 }

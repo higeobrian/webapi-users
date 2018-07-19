@@ -27,6 +27,7 @@
 --     description VARCHAR(255) NOT NULL,
 --     imageUrl VARCHAR(255),
 --     view int NOT NULL,
+--     added int NOT NULL,
 --     public TINYINT (1),
 --     userId VARCHAR(255),
 --     INDEX userId (userId),
@@ -36,11 +37,16 @@
 --     PRIMARY KEY (id)
 -- );
 
+
+
+-- DROP TABLE vaultkeeps;
+
+
+
 -- CREATE TABLE vaultkeeps (
 --     id int NOT NULL AUTO_INCREMENT,
 --     vaultId int NOT NULL,
 --     keepId int NOT NULL,
---     added int NOT NULL,
 --     userId VARCHAR(255) NOT NULL,
 
 --     PRIMARY KEY (id),
@@ -58,7 +64,7 @@
 --     FOREIGN KEY (keepId)
 --         REFERENCES keeps(id)
 --         ON DELETE CASCADE
--- )
+-- );
 
 -- SELECT * FROM vaultkeeps vk
 -- INNER JOIN keeps k ON k.id = vk.keepId 

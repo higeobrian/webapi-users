@@ -1,53 +1,25 @@
 <template>
 <div class="container">
 <div class="row">
+  <center>
 <div class="col-12">
 
 <!-- Display Vault -->
-<div class="row">
-<div class="col-12">
-<div v-for="vault in vaults" :key="vault.id " class="card mb-4 text-center ">
-<h3 class="card-text">Vault Title: {{vault.title}}</h3>
-<h3 class="card-text">Vault Description: {{vault.description}}</h3>
-</div>
-</div>
-</div>
-     
-<!-- View Vault Model -->
-<div class="modal fade" id="viewKeepModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog" role="document">
-<div class="modal-content">
-<div class="modal-header">
 
-<h5 class="modal-title" id="exampleModalLabel">{{vault.title}}</h5>
-
-<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-<span aria-hidden="true">&times;</span>
-</button>
-</div>
-<div class="modal-body">
-                      
-<h3>{{vault.description}}</h3>
-
-<div class="dropdown">
+<div class="dropdown mb-3 mt-3">
 <select v-model="vault">
-<option disabled value = "">Add to a Vault</option>
+<option disabled value = "">Select Vault To View Keeps</option>
 <option v-for='vault in vaults' :key="vault.id" :value="vault">{{vault.title}}</option>
 </select>
+<button type="button" @click="viewActiveVault(vault)" class="btn btn-secondary" data-dismiss="modal">Select Vault To View Keeps</button>
 </div>
 
-<!-- <button type="button" @click='addToVault' class="btn btn-secondary" data-dismiss="modal">Add to a Vault</button> -->
-
-<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-</div>
-</div>
-</div>
-</div>
-
-<!--ROUTER PUSH THE KEEPS WHEN USER SELECTS A VAULT? -->
 <Ukeeps></Ukeeps>
 
+<!--ROUTER PUSH THE KEEPS WHEN USER SELECTS A VAULT? -->
+
 </div>
+</center>
 </div>
 </div>
 </template>
@@ -61,9 +33,7 @@ export default {
   },
 
   mounted() {
-    this.$store.dispatch("getKeeps");
     this.$store.dispatch("getVaults");
-    this.$store.dispatch("setUserKeeps");
   },
 
   data() {
@@ -72,17 +42,15 @@ export default {
         title: "",
         description: "",
         imageUrl: "",
-        views: 0
-      },
-      vaultKeep: {
-        title: "",
-        description: "",
+        views: 0,
+        added: 0,
         public: 0
       },
       vault: {
         title: "",
         description: ""
-      }
+      },
+      activeVault: {}
     };
   },
 
@@ -98,16 +66,27 @@ export default {
     },
     user() {
       return this.$store.state.user;
+    },
+    userVaults() {
+      return this.$store.state.userVaults;
+    },
+    userKeeps() {
+      return this.$store.state.userKeeps;
     }
   },
 
   methods: {
-    removeKeep() {
-      this.$store.dispatch("removeKeep", this.keep);
-    },
-    viewActiveKeep() {
-      this.$store.dispatch("viewActiveKeep", this.keep);
+    viewActiveVault(vault) {
+      this.$store.dispatch("viewActiveVault", vault);
     }
+    //   getVaultKeeps() {
+    //  this.$store.dispatch("getVaultKeeps", this.vaultId);
+    // }
+    // this.activeKeep = keep;
+    // $("#viewKeepModal").modal("show");
+    // setActiveVault() {
+    //   this.$store.dispatch("setActiveVault", this.vault);
+    // }
   }
 };
 </script>

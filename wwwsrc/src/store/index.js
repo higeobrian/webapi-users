@@ -42,50 +42,150 @@ export default new vuex.Store({
         deleteUser(state, user) {
             state.user = user
         },
-        /////////////////////////////////
-        viewCount(state, keep) {                 // view active keep
-            state.keeps = keep
-        },
-        /////////////////////////////////
         getVaults(state, vaults) {
-            state.vaults = vaults
+            state.vaults = vaults       //all
         },
         getKeeps(state, keeps) {
-            state.keeps = keeps
+            state.keeps = keeps         //all
         },
-
-        setUserVaults(state, userVaults) {
-            state.userVaults = userVaults
+        getVaultKeeps(state, vaultKeeps) {
+            state.vaultKeeps = vaultKeeps
         },
-        setUserKeeps(state, userKeeps) {
-            state.userKeeps = userKeeps
-        },
-
-        setActiveVault(state, vault) {
+        viewActiveVault(state, vault) {
             state.activeVault = vault
         },
+        //////////////////////////////////EVERYTHING ABOVE WORKS////////////////////////////////////
+
+
+
         setActiveKeep(state, keep) {
             state.activeKeep = keep
         },
-
         removeUserKeep(state, userKeep) {
             state.userKeeps = userKeep
         },
-
-        createVault(state, vault) {
-            state.vaults = vault
-        },
-        createKeep(state, keep) {
-            state.keeps = keep
-        }
     },
 
+    // setUserKeeps(state, userKeeps) {
+    //     state.userKeeps = userKeeps
+    // },
+
     actions: {
-        viewActiveKeep({ commit }, keep) {
-            payload.views++
-            api.get('api/keeps/' + keep.id, keep)
+
+    
+
+        getUserKeeps({ commit }, user) {
+            api.get('api/keep/user' + user.id, user)
                 .then(res => {
-                    commit('viewCount', res.data)                         // view single keep by id from activeKeep []???????
+                    commit("setUserKeeps", res.data)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+
+        //////// testing this one brian.
+
+        setUserKeeps({ commit }) {
+            api.get('/api/vaulktkeeps/' + user.id)
+                .then(res => {
+                    commit('setUserKeeps', res.data)                       // get all vaultkeeps from vaultkeeps []
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+
+        setUserActiveVault({ commit }) {
+            api.get('/api/vault/' + vault.id)
+                .then(res => {
+                    commit("setActiveVault", res.data)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+
+        setUserActiveKeep({ commit }) {
+            api.get('/api/vaultkeeps/' + keep.id)
+                .then(res => {
+                    commit("setActiveKeep", res.data)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+
+        //////////////////////////////////--------- PROFILE PAGE /////////////////////////////////////////
+
+        viewActiveVault({ commit }, vault) {
+            commit('viewActiveVault', vault)
+        },
+
+
+        getVaultKeeps({ commit }, vaultkeeps) {
+            api.get('api/vaultkeeps/' + vault.id, vaultkeeps)
+                .then(res => {
+                    commit("getVaultKeeps", res.data)                 // gets vaultkeeps by vault id from vaults []
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+
+        ////////////////////////////-------- U KEEPS ///////////////////////////////////////////////////            
+
+        editKeep({ commit }, keep) {
+            api.put('api/keep/' + keep.id, keep)
+                .then(res => {
+                    commit('getKeeps')                                    // edit keep by keep id, updates keep []
+                })
+                .catch(err => {
+                    console.log(err)
+                })                                                                // USED IN [UKEEPS.VUE]                               
+        },
+
+
+        removeUserKeep({ commit }, user) {
+            api.delete('api/vaultKeeps/' + user.id, user)
+                .then(res => {
+                    commit('getKeeps')                          // remove keep from keep []
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+
+        removeVaultKeep({ dispatch }, keep) {
+            api.delete('api/vaultkeeps/' + keep.id + '/' + vault.id, keep)
+                .then(res => {
+                    dispatch('getVaultKeeps')                          // remove keep from keep []
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+
+        /////////////////////////////////////// EVERYTHING BELOW IS HOME PAGE/////////////////////////////////////////////////
+
+        //NOTE: Always add foward slash when you +(ref).
+        viewActiveKeep({ dispatch }, keep) {
+            keep.view++
+            api.put('api/keep/' + keep.id, keep)
+                .then(res => {
+                    dispatch('getKeeps')
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        },
+
+        addKeepToVault({ dispatch }, vaultkeep) {
+            vaultkeep.added++
+            api.post('api/vaultkeeps/', vaultkeep)
+                .then(res => {
+                    dispatch('getVaultKeeps')
                 })
                 .catch(err => {
                     console.log(err)
@@ -101,7 +201,6 @@ export default new vuex.Store({
                     console.log(err)
                 })
         },
-
         getKeeps({ commit }) {
             api.get('api/keep')
                 .then(res => {
@@ -112,172 +211,22 @@ export default new vuex.Store({
                 })
         },
 
-        setUserVaults({ commit }) {
-            api.get('api/vault/', +user.id)
-                .then(res => {
-                    commit("setUserVaults", res.data)                 // gets vaultkeeps by user id from vaults []
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        },
-
-        setUserKeeps({ commit }) {
-            api.get('/api/userkeeps', +user.id)
-                .then(res => {
-                    commit('setUserKeeps', res.data)                       // get all vaultkeeps from vaultkeeps []
-                    console.log(res)
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        },
-
-        setActiveVault({ commit }) {
-            api.get('/api/vault', + vault.id)
-                .then(res => {
-                    commit("setActiveVault", res.data)
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        },
-
-        setActiveKeep({ commit }) {
-            api.get('/api/keep', + keep.id)
-                .then(res => {
-                    commit("setActiveKeep", res.data)
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        },
-
-        addKeepToVault({ commit }, Keep) {                              // only pass keep (obj) if necessary.. api.get unecessary
-            vaultKeeps.added++
-            api.post('api/vaultKeeps', Keep)
-                .then(res => {
-                    commit('setUserKeeps')                                 // add keep to keepvaults...[]... not userkeeps? confused.
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        },
-
-        createVault({ commit, }, vault) {
+        createVault({ dispatch }, vault) {
             api.post('api/vault', vault)
                 .then(res => {
-                    commit("createVault", res.data)                             // create vault []
-                })
-                .catch(err => {
-                    console.log(err)
+                    dispatch('getVaults')
                 })
         },
 
         createKeep({ commit }, keep) {
             api.post('api/keep', keep)
                 .then(res => {
-                    commit('createKeep', res.data)                              // creates a keep []
+                    commit('getKeeps')                              // creates a keep []
                 })
                 .catch(err => {
                     console.log(err)
                 })
         },
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////            
-
-        editKeep({ commit }, keep) {
-            api.put('api/keep/' + keep.id, keep)
-                .then(res => {
-                    commit('getKeeps')                                    // edit keep by keep id, updates keep []
-                })
-                .catch(err => {
-                    console.log(err)
-                })                                                                // USED IN [UKEEPS.VUE]                               
-        },
-
-        removeKeep({ commit }, keep) {
-            api.delete('api/keep/' + keep.id)
-                .then(res => {
-                    commit('removeKeep', res.data)                          // remove keep from keep []
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        },
-
-        removeUserKeep({ commit }, user) {
-            api.delete('api/keep/' + user.id, user)
-                .then(res => {
-                    commit('removeKeep', res.data)                          // remove keep from keep []
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        },
-
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        // removeKeepFromVault({ commit }, vaultKeeps) {    
-        //     api.delete('api/vaultKeeps/' + vaultKeeps.vaultId + '/' + vaultKeeps.id)                                       
-        //         .then(res => {
-        //             commit('removeKeepFromVault', res.data)                             
-        //         })                                                          // remove vaultkeep by vault/keep id, removes from vaultkeeps[]
-        //         .catch(err => {
-        //             console.log(err)
-        //         })
-        // },
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //Get all keep by vaultId[]
-        // USE IN PROFILE... 
-
-        // setActiveVault({ commit, dispatch, state }, vault) {              
-        //     api.get('api/vault' + vault.id, vault)
-        //         .then(res => {
-        //             commit('setActiveVault', res.data)                   // gets single vault by id from activeVault []
-        //         })
-        //         .catch(err => {
-        //             console.log(err)
-        //         })
-        // },
-
-        // viewKeep({ commit, dispatch, state }, keep) {                   
-        //     api.get('api/keep' + keep.id, keep)
-        //     .then(res => {
-        //         commit('setActiveKeep', res.data)                        // gets single keep by id from userKeeps []
-        //     })
-        //     .catch(err => {
-        //         console.log(err)
-        //     })
-        // },
-
-
-        // setActiveKeep({ commit }, payload) {   
-        //     // payload.views++                                               
-        //     api.get('api/keep/' + keep.id, payload)
-        //         .then(res => {
-        //             commit("setKeeps", res.data)                          // get single keep by keep id from keeps []
-        //         })
-        //         .catch(err => {
-        //             console.log(err)
-        //         })
-        // },
-
-        //VIEWKEEP
-        // viewCount({ dispatch }, payload) {//= ACTIVEKEEP
-        //     payload.views++
-        //     api.put('api/keep/' + keep.id, payload)                
-        //         .then(() => {                                       
-        //             dispatch('editKeep')                                 // updates single keep by id from keeps []
-        //         })
-        //         .catch(err => {
-        //             console.log(err)
-        //         })
-        // },
-
-        //NOTE: Always add foward slash when you +(ref).
 
         register({ commit }, payload) {
             console.log(payload)
@@ -320,3 +269,70 @@ export default new vuex.Store({
         },
     }
 })
+
+      // createVaultKeep({ dispatch }, vaultKeep) {
+        //     api.post('api/vaultkeeps/' + keep.id + '/' + vault.id + '/' + user.id, vaultKeep)
+        //     .then(res => {
+            //         dispatch("getVaults")                             
+            //     })
+            //     .catch(err => {
+            //         console.log(err)
+            //     })
+            // },
+
+ // removeKeepFromVault({ commit }, vaultKeeps) {    
+        //     api.delete('api/vaultKeeps/' + vaultKeeps.vaultId + '/' + vaultKeeps.id)                                       
+        //         .then(res => {
+        //             commit('removeKeepFromVault', res.data)                             
+        //         })                                                          // remove vaultkeep by vault/keep id, removes from vaultkeeps[]
+        //         .catch(err => {
+        //             console.log(err)
+        //         })
+        // },
+
+        //Get all keep by vaultId[]
+        // USE IN PROFILE... 
+
+        // setActiveVault({ commit, dispatch, state }, vault) {              
+        //     api.get('api/vault/' + vault.id, vault)
+        //         .then(res => {
+            //             commit('setActiveVault', res.data)                   // gets single vault by id from activeVault []
+        //         })
+        //         .catch(err => {
+            //             console.log(err)
+        //         })
+        // },
+
+        // viewKeep({ commit, dispatch, state }, keep) {                   
+        //     api.get('api/keep/' + keep.id, keep)
+        //     .then(res => {
+            //         commit('setActiveKeep', res.data)                        // gets single keep by id from userKeeps []
+        //     })
+        //     .catch(err => {
+            //         console.log(err)
+        //     })
+        // },
+
+
+        // setActiveKeep({ commit }, payload) {   
+            //     // payload.views++                                               
+            //     api.get('api/keep/' + keep.id, payload)
+            //         .then(res => {
+                //             commit("setKeeps", res.data)                          // get single keep by keep id from keeps []
+                //         })
+                //         .catch(err => {
+                    //             console.log(err)
+                    //         })
+        // },
+
+        //VIEWKEEP
+        // viewCount({ dispatch }, payload) {//= ACTIVEKEEP
+        //     payload.views++
+        //     api.put('api/keep/' + keep.id, payload)                
+        //         .then(() => {                                       
+        //             dispatch('editKeep')                                 // updates single keep by id from keeps []
+        //         })
+        //         .catch(err => {
+        //             console.log(err)
+        //         })
+        // },

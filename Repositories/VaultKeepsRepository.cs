@@ -16,7 +16,7 @@ namespace API_Users.Repositories
         public VaultKeeps CreateVaultKeep(VaultKeeps newVaultKeep)
         {
             int id = _db.ExecuteScalar<int>(@"
-      INSERT INTO vaultkeeps (vaultId, keepId, userId) 
+      INSERT INTO vaultkeeps (vaultId, keepId, userId)  
       VALUES (@VaultId,@KeepId,@UserId); 
       SELECT LAST_INSERT_ID();
       ", newVaultKeep);
@@ -24,17 +24,17 @@ namespace API_Users.Repositories
             return newVaultKeep;
         }
 
-        // GET BY KEEP ID
-        public IEnumerable<VaultKeeps> GetbyKeepId(int id)
-        {
-            return _db.Query<VaultKeeps>("SELECT * FROM vaultkeeps WHERE keepId = @id;", new { id });
-        }
+        // // GET BY KEEP ID
+        // public IEnumerable<VaultKeeps> GetbyKeepId(int id)
+        // {
+        //     return _db.Query<VaultKeeps>("SELECT * FROM vaultkeeps WHERE keepId = @id;", new { id });
+        // }
 
-        // GET BY VAULT ID
-        public IEnumerable<VaultKeeps> GetbyVaultId(int id)
-        {
-            return _db.Query<VaultKeeps>("SELECT * FROM vaultkeeps WHERE vaultId = @id;", new { id });
-        }
+        // // GET BY VAULT ID
+        // public IEnumerable<VaultKeeps> GetbyVaultId(int id)
+        // {
+        //     return _db.Query<VaultKeeps>("SELECT * FROM vaultkeeps WHERE vaultId = @id;", new { id });
+        // }
 
         // GET BY USER ID    
         public IEnumerable<VaultKeeps> GetVaultKeepsByUserId(string userId)
@@ -46,12 +46,10 @@ namespace API_Users.Repositories
         public VaultKeeps EditVaultKeep(int id, VaultKeeps VaultKeep)
         {
             VaultKeep.Id = id;
-            VaultKeep.Added++;
             var i = _db.Execute(@"
                 UPDATE vaultkeeps SET
                     vaultId = @VaultId,
-                    keepId = @KeepId,
-                    added = @Added
+                    keepId = @KeepId
                 WHERE id = @Id
             ", VaultKeep);
             if (i > 0)
@@ -76,10 +74,11 @@ namespace API_Users.Repositories
         }
 
         // GET BY ID
-        public VaultKeeps GetbyVaultKeepId(int id)
+        public IEnumerable<Keep> GetKeepByVaultId(string vaultId)
         {
-            return _db.QueryFirstOrDefault<VaultKeeps>("SELECT * FROM vaultkeeps WHERE id = @id;", new { id });
-        }
+            return _db.Query<Keep>(@"SELECT * FROM vaultkeeps vk
+INNER JOIN keeps k ON k.id = vk.keepId 
+WHERE (vaultId = @vaultId)", new { vaultId});
 
         //DELETE BY ID
         // public void DeleteVaultKeep(int id)
@@ -87,5 +86,6 @@ namespace API_Users.Repositories
         //   _db.Execute("DELETE FROM vaultkeeps WHERE id=@id;", new{id});
         // }
 
+        }
     }
 }
