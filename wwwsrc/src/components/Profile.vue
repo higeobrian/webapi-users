@@ -17,7 +17,12 @@
 <div class="displayActiveVault">
   <h3>Active Vault: {{activeVault.title}}</h3>
   <h3>Active Vault Description: {{activeVault.description}} </h3>
-  <div v-for="keep in keeps" v-if="!keep.public" :key="keep.id">
+  <br><br>
+    
+    
+    <!-- <button v-if="activeVault.vaultId==vaultId" @click="viewActiveKeeps(Keeps)"></button> -->
+  <!-- <div v-for="activeVaultKeep in vaultkeeps" v-if vaultd==user.id"> -->
+    <div v-for="keep in vaultKeeps" :key="keep.id">
     <h5>Keep Title: {{keep.title}}</h5>
      <h5>Keep Description: {{keep.description}}</h5>
     <img :src="keep.imageUrl " alt=" ">
@@ -49,6 +54,7 @@ export default {
 
   mounted() {
     this.$store.dispatch("getVaults");
+    this.$store.dispatch("getVaultKeeps", this.vaultId)
   },
 
   data() {
@@ -66,10 +72,17 @@ export default {
         description: ""
       },
       activeVault: {},
-      vaultKeeps: {}
+      vaultKeeps: {},
+      activeVaultKeeps: {}
     };
 
   },
+      methods: {
+        viewActiveVault(vault) {
+          this.activeVault = this.vault;                                //added1
+          this.$store.dispatch("viewActiveVault", vault);
+        }
+      },
 
   computed: {
     keeps() {
@@ -78,7 +91,7 @@ export default {
     vaults() {
       return this.$store.state.vaults;
     },
-    vaultKeeps() {
+    vaultKeep() {
       return this.$store.state.vaultKeeps;
     },
     user() {
@@ -90,13 +103,8 @@ export default {
     userKeeps() {
       return this.$store.state.userKeeps;
     }
-  },
+  }
 
-  methods: {
-    viewActiveVault(vault) {
-      this.activeVault = this.vault;                                //added1
-      this.$store.dispatch("viewActiveVault", vault);
-    }
     //   getVaultKeeps() {
     //  this.$store.dispatch("getVaultKeeps", this.vaultId);
     // }
@@ -105,7 +113,6 @@ export default {
     // setActiveVault() {
     //   this.$store.dispatch("setActiveVault", this.vault);
     // }
-  }
 };
 </script>
 
