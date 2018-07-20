@@ -18,6 +18,10 @@
         </form>
     </div>
 
+
+
+
+
     <div class="col-6 align-self-center">  
         <form v-on:submit.prevent="createVault(vault)">
         <input class="input" type="text" name="vaultTitle" placeholder="VaultTitle" id="vaultTitle" v-model="vault.title"><br>
@@ -29,13 +33,26 @@
 <br>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="row">
 <div class="col-12">
 <div v-for="keep in keeps" v-if="!keep.public" :key="keep.id"> <!-- display all keeps -->
      <h5>Keep Title: {{keep.title}}</h5>
      <h5>Keep Description: {{keep.description}}</h5>
      <img :src="keep.imageUrl " alt=" ">
-     <button class="btn" data-toggle="modal" data-target="#viewKeepModal" @click="viewActiveKeep(keep)">View</button>
+     <button class="btn" data-toggle="modal" data-target="#viewKeepModal" @click="viewActiveKeep(Keep)">View</button>
      <button class="btn2">Added:{{keep.added}}</button>
       <button class="btn3">Views:{{keep.view}}</button>
 </div>
@@ -81,6 +98,7 @@
 </template>
 
 <script>
+import router from '../router'
 export default {
   name: "Home",
 
@@ -112,12 +130,12 @@ export default {
     createKeep() {
       this.$store.dispatch("createKeep", this.keep);
     },
-    createVault() {
-      this.$store.dispatch("createVault", this.vault);
+    createVault(vault) {
+      this.$store.dispatch("createVault");
     },
     viewActiveKeep(keep) {
       this.activeKeep = keep;
-      this.$store.dispatch("viewActiveKeep", keep);
+      this.$store.dispatch("viewActiveKeep");
       $("#viewKeepModal").modal("show");
     },
     addKeepToVault() {

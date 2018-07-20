@@ -66,8 +66,8 @@ export default {
     editKeep() {
       this.$store.dispatch("editKeep", this.keep);
     },
-    removemVaultKeep() {
-      this.$store.dispatch("removeVaultKeep", this.keep);
+    removemKeep() {
+      this.$store.dispatch("removeKeep", this.keep);
     }
   },
 

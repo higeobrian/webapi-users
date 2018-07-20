@@ -18,26 +18,27 @@
   <h3>Active Vault: {{activeVault.title}}</h3>
   <h3>Active Vault Description: {{activeVault.description}} </h3>
   <br><br>
-    
-    
     <!-- <button v-if="activeVault.vaultId==vaultId" @click="viewActiveKeeps(Keeps)"></button> -->
   <!-- <div v-for="activeVaultKeep in vaultkeeps" v-if vaultd==user.id"> -->
     <div v-for="keep in vaultKeeps" :key="keep.id">
     <h5>Keep Title: {{keep.title}}</h5>
      <h5>Keep Description: {{keep.description}}</h5>
     <img :src="keep.imageUrl " alt=" ">
+    <p>Views: {{keep.views}}</p>
+    <p>Added: {{keep.added}}</p>
+    <br><br>
+    <button @click="RemoveKeep(keep)">Remove Keep</button>
+    </div>
+    
 
-  </div>
-
+     </div>
   
   <!-- <button type="button" @click="getVaultKeeps()" class="btn btn-secondary" data-dismiss="modal">Add to a Vault</button> -->
 
-  </div>
 
 <!-- <Ukeeps></Ukeeps> -->
 
 <!--ROUTER PUSH THE KEEPS WHEN USER SELECTS A VAULT? -->
-
 </div>
 </center>
 </div>
@@ -45,6 +46,7 @@
 </template>
 
 <script>
+import router from '../router'
 import Ukeeps from "./Ukeeps";
 export default {
   name: "Profile",
@@ -54,7 +56,9 @@ export default {
 
   mounted() {
     this.$store.dispatch("getVaults");
-    this.$store.dispatch("getVaultKeeps", this.vaultId)
+    this.$store.dispatch("getVaultKeeps", this.vault);
+    this.$store.dispatch("getKeeps");
+    this.$store.dispatch('getVaultKeepsById', this.vault)
   },
 
   data() {
@@ -75,14 +79,16 @@ export default {
       vaultKeeps: {},
       activeVaultKeeps: {}
     };
-
   },
-      methods: {
-        viewActiveVault(vault) {
-          this.activeVault = this.vault;                                //added1
-          this.$store.dispatch("viewActiveVault", vault);
-        }
-      },
+  methods: {
+    viewActiveVault(vault) {
+      this.activeVault = this.vault; //added1
+      this.$store.dispatch("viewActiveVault", vault);
+    },
+    removemKeep(keep) {
+      this.$store.dispatch("removeVaultKeep", keep);
+    },
+  },
 
   computed: {
     keeps() {
@@ -105,14 +111,14 @@ export default {
     }
   }
 
-    //   getVaultKeeps() {
-    //  this.$store.dispatch("getVaultKeeps", this.vaultId);
-    // }
-    // this.activeKeep = keep;
-    // $("#viewKeepModal").modal("show");
-    // setActiveVault() {
-    //   this.$store.dispatch("setActiveVault", this.vault);
-    // }
+  //   getVaultKeeps() {
+  //  this.$store.dispatch("getVaultKeeps", this.vaultId);
+  // }
+  // this.activeKeep = keep;
+  // $("#viewKeepModal").modal("show");
+  // setActiveVault() {
+  //   this.$store.dispatch("setActiveVault", this.vault);
+  // }
 };
 </script>
 

@@ -72,8 +72,6 @@ export default new vuex.Store({
 
     actions: {
 
-    
-
         getUserKeeps({ commit }, user) {
             api.get('api/keep/user' + user.id, user)
                 .then(res => {
@@ -117,83 +115,104 @@ export default new vuex.Store({
                 })
         },
 
+        
         //////////////////////////////////--------- PROFILE PAGE /////////////////////////////////////////
-
-        viewActiveVault({ commit }, vault) {
-            commit('viewActiveVault', vault)
+        
+        createVaultKeep({ dispatch }, vault) {
+            api.post('api/vaultkeeps/', vault)
+            .then(res => {
+                dispatch('getVaultKeeps')
+              })
+              .catch(err => {
+                  console.log(err)
+                })
+            },
+            
+        viewActiveVault({ dispatch }, vault) {
+            dispatch('getVaultKeeps', vault)
         },
 
-
-        getVaultKeeps({ commit }, vaultId) {
-            api.get('api/vaultkeeps/' + vaultId)
-                .then(res => {
-                    commit("getVaultKeeps", res.data)                 // gets vaultkeeps by vault id from vaults []
-                })
-                .catch(err => {
-                    console.log(err)
-                })
+        getVaultKeepsById({ commit }, vaultKeep){
+      
+            api.get('api/vaultkeeps/vault/'+ vault.id, vaultKeep )
+             .then(res => {
+               commit('getVaultKeeps', res.data )
+             })
+             .catch(err => {
+                console.log(err)
+            })
+          },
+        
+        getVaultKeeps({ commit }) {
+            api.get('api/vaultkeeps/' + vault.id)
+            .then(res => {
+                commit("getVaultKeeps", res.data)                 // gets vaultkeeps by vault id from vaults []
+            })
+            .catch(err => {
+                console.log(err)
+            })
         },
-
+        
         ////////////////////////////-------- U KEEPS ///////////////////////////////////////////////////            
-
+        
         editKeep({ commit }, keep) {
             api.put('api/keep/' + keep.id, keep)
-                .then(res => {
+            .then(res => {
                     commit('getKeeps')                                    // edit keep by keep id, updates keep []
                 })
                 .catch(err => {
                     console.log(err)
                 })                                                                // USED IN [UKEEPS.VUE]                               
-        },
-
-
-        removeUserKeep({ commit }, user) {
-            api.delete('api/vaultKeeps/' + user.id, user)
-                .then(res => {
-                    commit('getKeeps')                          // remove keep from keep []
+            },
+            
+            
+            removeKeep({dispatch}, keep){
+                api.delete('api/keep/'+ keep)
+                .then(res=>{
+                    dispatch('getKeeps')
                 })
-                .catch(err => {
+                .catch(err=>{
                     console.log(err)
                 })
-        },
-
-        removeVaultKeep({ dispatch }, keep) {
-            api.delete('api/vaultkeeps/' + keep.id + '/' + vault.id, keep)
+            },
+            
+            removeVaultKeep({ dispatch }, keep) {
+                api.delete('api/vaultkeeps/' + keep.id + '/' + vault.id, keep)
                 .then(res => {
                     dispatch('getVaultKeeps')                          // remove keep from keep []
                 })
                 .catch(err => {
                     console.log(err)
                 })
-        },
-
-        /////////////////////////////////////// EVERYTHING BELOW IS HOME PAGE/////////////////////////////////////////////////
-
-        //NOTE: Always add foward slash when you +(ref).
-        viewActiveKeep({ dispatch }, keep) {
-            keep.view++
-            api.put('api/keep/' + keep.id, keep)
+            },
+            
+            /////////////////////////////////////// EVERYTHING BELOW IS HOME PAGE/////////////////////////////////////////////////
+            
+            //NOTE: Always add foward slash when you +(ref).
+            viewActiveKeep({ dispatch }, keep) {
+                keep.view++
+                api.put('api/keep/' + keep.id, keep)
                 .then(res => {
                     dispatch('getKeeps')
                 })
                 .catch(err => {
                     console.log(err)
                 })
-        },
-
-        addKeepToVault({ dispatch }, vaultkeep) {
-            vaultkeep.added++
-            api.post('api/vaultkeeps/', vaultkeep)
+            },
+            
+            addKeepToVault({ dispatch }, vaultkeep) {
+                vaultkeep.added++
+                api.post('api/vaultkeeps/' + vaultkeep)
                 .then(res => {
                     dispatch('getVaultKeeps')
                 })
                 .catch(err => {
                     console.log(err)
                 })
-        },
-
-        getVaults({ commit }) {
-            api.get('api/vault')
+            },
+            
+            getVaults({ commit }) {
+                api.get('api/vault')
                 .then(res => {
                     commit('getVaults', res.data)                               // get all vaults from vault []
                 })
