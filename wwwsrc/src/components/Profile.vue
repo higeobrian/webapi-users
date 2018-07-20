@@ -14,7 +14,22 @@
 <button type="button" @click="viewActiveVault(vault)" class="btn btn-secondary" data-dismiss="modal">Select Vault To View Keeps</button>
 </div>
 
-<Ukeeps></Ukeeps>
+<div class="displayActiveVault">
+  <h3>Active Vault: {{activeVault.title}}</h3>
+  <h3>Active Vault Description: {{activeVault.description}} </h3>
+  <div v-for="keep in keeps" v-if="!keep.public" :key="keep.id">
+    <h5>Keep Title: {{keep.title}}</h5>
+     <h5>Keep Description: {{keep.description}}</h5>
+    <img :src="keep.imageUrl " alt=" ">
+
+  </div>
+
+  
+  <!-- <button type="button" @click="getVaultKeeps()" class="btn btn-secondary" data-dismiss="modal">Add to a Vault</button> -->
+
+  </div>
+
+<!-- <Ukeeps></Ukeeps> -->
 
 <!--ROUTER PUSH THE KEEPS WHEN USER SELECTS A VAULT? -->
 
@@ -50,8 +65,10 @@ export default {
         title: "",
         description: ""
       },
-      activeVault: {}
+      activeVault: {},
+      vaultKeeps: {}
     };
+
   },
 
   computed: {
@@ -77,6 +94,7 @@ export default {
 
   methods: {
     viewActiveVault(vault) {
+      this.activeVault = this.vault;                                //added1
       this.$store.dispatch("viewActiveVault", vault);
     }
     //   getVaultKeeps() {

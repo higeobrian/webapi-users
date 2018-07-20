@@ -3,11 +3,11 @@
 <div class="row">
 <div class="col-12">
 
-<div v-for="keep in vaultKeeps" :key="keep.id" class="card mb-4 text-center">    
+<div v-for="vaultKeep in vaultKeeps" :key="vaultKeep.id" class="card mb-4 text-center">    
 
-        <h3><p>Keep Title: {{keep.title}}</p></h3>
-        <h3><p>Keep Description: {{keep.description}}</P></h3>
-        <img :src="keep.imageUrl" alt="photo">
+        <h3><p>Keep Title: {{vaultKeep.title}}</p></h3>
+        <h3><p>Keep Description: {{vaultKeep.description}}</P></h3>
+        <img :src="vaultkeep.imageUrl" alt="photo">
         <center>
         <button class="btn2">Added:{{keep.added}}</button>
         <button class="btn3">Views:{{keep.view}}</button>
